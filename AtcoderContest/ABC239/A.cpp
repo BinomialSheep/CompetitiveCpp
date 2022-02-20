@@ -12,12 +12,8 @@ int main() {
 
   double ans = sqrt(h * (12800000 + h));
 
+  cout.precision(9);
   cout << ans << endl;
-
-  /*
-cout << (long double)((long double)sqrt(h) * (long double)sqrt(12800000 + h))
-     << endl;
-     */
 
   return 0;
 }
