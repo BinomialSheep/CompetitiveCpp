@@ -5,26 +5,27 @@ using ll = long long;
 // g++ --std=c++14 -I "/mnt/c/Program Files (x86)/Microsoft Visual
 // Studio/2019/Community/VC/Tools/MSVC/14.29.30037/include" code.cpp
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define MAX 10000
+#define INTFY (1 << 29)
+
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
-
-/* 幾何学的オブジェクトのまとめ */
 
 // 点とベクトル
 class Point {
  public:
   double x, y;
   Point(double x = 0, double y = 0) : x(x), y(y) {}
-
-  /* --- メンバ関数 --- */
+  // ベクトルの基本演算
+  Point operator+(Point p) { return Point(x + p.x, y + p.y); }
+  Point operator-(Point p) { return Point(x - p.x, y - p.y); }
+  Point operator*(double k) { return Point(x * k, y * k); }
+  Point operator/(double k) { return Point(x / k, y / k); }
   // ベクトルの大きさ
   double norm() { return x * x + y * y; }
-  double abs() { return sqrt(norm()); }
-
-  /* --- クラス関数 --- */
-  // ベクトルの大きさ
   static double norm(Point p) { return p.x * p.x + p.y * p.y; }
+  double abs() { return sqrt(norm()); }
   static double abs(Point p) { return sqrt(norm(p)); }
   // ベクトルの内積
   static double dot(Point a, Point b) { return a.x * b.x + a.y * b.y; }
@@ -55,13 +56,6 @@ class Point {
     return p1 + base * r;
   }
 
-  /* --- 演算子のオーバーロード --- */
-  // ベクトルの基本演算
-  Point operator+(Point p) { return Point(x + p.x, y + p.y); }
-  Point operator-(Point p) { return Point(x - p.x, y - p.y); }
-  Point operator*(double k) { return Point(x * k, y * k); }
-  Point operator/(double k) { return Point(x / k, y / k); }
-
   // 点の不等式（ここではx座標の大きさ。x座標が等しければy座標の大きさ）
   bool operator<(const Point &p) const { return x != p.x ? x < p.x : y < p.y; }
   // 点の等式
@@ -77,11 +71,11 @@ typedef Point Vector;
 struct Segment {
   Point p1, p2;
   // 直行判定
-  bool isOrthogonal(Segment s1, Segment s2) {
+  static bool isOrthogonal(Segment s1, Segment s2) {
     return equal(Point::cross(s1.p2 - s1.p1, s2.p2 - s2.p1), 0.0);
   }
   // 平行判定
-  bool isParallel(Segment s1, Segment s2) {
+  static bool isParallel(Segment s1, Segment s2) {
     return equal(Point::cross(s1.p2 - s1.p1, s2.p2 - s2.p1), 0.0);
   }
   // 射影
@@ -93,20 +87,21 @@ struct Segment {
 };
 typedef Segment Line;
 
-// 円
-class Circle {
- public:
-  Point c;
-  double r;
-  Circle(Point c = Point(), double r = 0.0) : c(c), r(r) {}
-};
-
-// 多角形
-typedef vector<Point> Polygon;
-
 int main() {
-  int n;
-  cin >> n;
+  int x1, y1, x2, y2;
+  cin >> x1 >> y1 >> x2 >> y2;
+  int q;
+  cin >> q;
+  vector<pair<double, double>> ans(q);
+  rep(i, q) {
+    int x, y;
+    cin >> x >> y;
+    Point p = Point::Project(Point(x1, y1), Point(x2, y2), Point(x, y));
+    ans[i] = pair<double, double>(p.x, p.y);
+  }
+
+  cout.precision(15);
+  rep(i, q) { cout << ans[i].first << " " << ans[i].second << endl; }
 
   return 0;
 }
