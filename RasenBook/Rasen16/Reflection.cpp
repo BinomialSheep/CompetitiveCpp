@@ -5,6 +5,8 @@ using ll = long long;
 // g++ --std=c++14 -I "/mnt/c/Program Files (x86)/Microsoft Visual
 // Studio/2019/Community/VC/Tools/MSVC/14.29.30037/include" code.cpp
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define MAX 10000
+#define INTFY (1 << 29)
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
@@ -59,49 +61,6 @@ class Point {
     // pからp1p2への射影へのベクトルを2倍すればいい
     return p + (project(p1, p2, p) - p) * 2.0;
   }
-  // 点と点の距離
-  static double getDistance(Point a, Point b) { return abs(a - b); }
-  // 点pと直線abの距離
-  static double getDistanceLP(Point a, Point b, Point p) {
-    return abs(cross(b - a, p - a) / abs(b - a));
-  }
-  // 点pと線分abの距離(Sはsegment)
-  static double getDistanceSP(Point a, Point b, Point p) {
-    // 線分と端点-点pの為す角が90度を超えたら端点と点の距離を返す
-    if (dot(b - a, p - a) < 0.0) return abs(p - a);
-    if (dot(a - b, p - b) < 0.0) return abs(p - b);
-    // そうでなければ線との距離を返す
-    return getDistanceLP(a, b, p);
-  }
-  // 線分abと線分cdの距離
-  static double getDistanceSS(Point a, Point b, Point c, Point d) {
-    // 線分が交差してたら距離0
-    if (intersect(a, b, c, d)) return 0.0;
-    // 線分abと点c, 線分abと点d, 線分cdと点a, 線分cdと点bのmin
-    return min(min(getDistanceSP(a, b, c), getDistanceSP(a, b, d)),
-               min(getDistanceSP(c, d, a), getDistanceSP(c, d, b)));
-  }
-  // ベクトルabとacの位置判定（Counter-ClockWise)
-  static int ccw(Point a, Point b, Point c) {
-    const int COUNTER_CLOCKWISE = 1;  // a, b, cが半時計回り
-    const int CLOCKWISE = -1;         // a, b, cが時計回り
-    const int ONLINE_BACK = 2;        // c, a, bの順で同一直線上
-    const int ONLINE_FRONT = -2;      // a, b, cの順で同一直線上
-    const int ON_SEGMENT = 0;         // a, c, bの順で直線上
-    Point ab = b - a;
-    Point ac = c - a;
-    if (cross(ab, ac) > EPS) return COUNTER_CLOCKWISE;
-    if (cross(ab, ac) < -EPS) return CLOCKWISE;
-    if (dot(ab, ac) < -EPS) return ONLINE_BACK;
-    if (ab.norm() < ac.norm()) return ONLINE_FRONT;
-    return ON_SEGMENT;
-  }
-
-  // 線分abと線分cdの交差判定
-  static bool intersect(Point a, Point b, Point c, Point d) {
-    return (ccw(a, b, c) * ccw(a, b, d) <= 0 &&
-            ccw(c, d, a) * ccw(c, d, b) <= 0);
-  }
 
   /* --- 演算子のオーバーロード --- */
   // ベクトルの基本演算
@@ -142,31 +101,27 @@ struct Segment {
   static Point reflect(Segment s, Point p) {
     return p + (project(s, p) - p) * 2;
   }
-  // 線分と点の距離
-  static double getDistanceSP(Segment s, Point p) {
-    return Point::getDistanceSP(s.p1, s.p2, p);
-  }
-  // 線分と線分の距離
-  static double getDistanceSS(Segment s1, Segment s2) {
-    return Point::getDistanceSS(s1.p1, s1.p2, s2.p1, s2.p2);
-  }
 };
 typedef Segment Line;
 
-// 円
-class Circle {
- public:
-  Point c;
-  double r;
-  Circle(Point c = Point(), double r = 0.0) : c(c), r(r) {}
-};
-
-// 多角形
-typedef vector<Point> Polygon;
-
 int main() {
-  int n;
-  cin >> n;
+  int xp1, yp1, xp2, yp2;
+  cin >> xp1 >> yp1 >> xp2 >> yp2;
+  Point p1(xp1, yp1), p2(xp2, yp2);
+  int q;
+  cin >> q;
+  vector<Point> ans(q);
+  int xp0, yp0;
+  Point p0;
+  rep(i, q) {
+    cin >> xp0 >> yp0;
+    p0.x = xp0;
+    p0.y = yp0;
+    ans[i] = Point::reflect(p1, p2, p0);
+  }
+
+  cout.precision(15);
+  rep(i, q) cout << ans[i].x << " " << ans[i].y << endl;
 
   return 0;
 }

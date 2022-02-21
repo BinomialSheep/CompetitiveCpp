@@ -5,6 +5,8 @@ using ll = long long;
 // g++ --std=c++14 -I "/mnt/c/Program Files (x86)/Microsoft Visual
 // Studio/2019/Community/VC/Tools/MSVC/14.29.30037/include" code.cpp
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define MAX 10000
+#define INTFY (1 << 29)
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
@@ -153,20 +155,42 @@ struct Segment {
 };
 typedef Segment Line;
 
-// 円
-class Circle {
- public:
-  Point c;
-  double r;
-  Circle(Point c = Point(), double r = 0.0) : c(c), r(r) {}
-};
-
-// 多角形
-typedef vector<Point> Polygon;
-
 int main() {
-  int n;
-  cin >> n;
+  int x0, y0, x1, y1;
+  cin >> x0 >> y0 >> x1 >> y1;
+  Point p0(x0, y0), p1(x1, y1);
+  int q;
+  cin >> q;
+  vector<int> ans(q);
+
+  const int COUNTER_CLOCKWISE = 1;  // a, b, cが半時計回り
+  const int CLOCKWISE = -1;         // a, b, cが時計回り
+  const int ONLINE_BACK = 2;        // c, a, bの順で同一直線上
+  const int ONLINE_FRONT = -2;      // a, b, cの順で同一直線上
+  const int ON_SEGMENT = 0;         // a, c, bの順で直線上
+
+  rep(i, q) {
+    int x2, y2;
+    cin >> x2 >> y2;
+    Point p2(x2, y2);
+
+    ans[i] = Point::ccw(p0, p1, p2);
+  }
+
+  rep(i, q) {
+    string output;
+    if (ans[i] == COUNTER_CLOCKWISE)
+      output = "COUNTER_CLOCKWISE";
+    else if (ans[i] == CLOCKWISE)
+      output = "CLOCKWISE";
+    else if (ans[i] == ONLINE_BACK)
+      output = "ONLINE_BACK";
+    else if (ans[i] == ONLINE_FRONT)
+      output = "ONLINE_FRONT";
+    else
+      output = "ON_SEGMENT";
+    cout << output << endl;
+  }
 
   return 0;
 }

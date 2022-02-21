@@ -14,7 +14,8 @@
         "chrono": "cpp",
         "random": "cpp",
         "limits": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "complex": "cpp"
     },
     "C_Cpp.clang_format_style": "Google"
 }

@@ -12,8 +12,29 @@ using ll = long long;
 #define equal(a, b) (fabs((a) - (b)) < EPS)
 
 int main() {
-  int n;
-  cin >> n;
+  string s, t;
+  cin >> s >> t;
 
+  bool isYes = false;
+  int j = 0;
+  while (j <= t.size() - 1) {
+    // indexを1ズラした文字列を作る
+    char temp1;
+    char temp2 = s[t.size() - 1];
+    rep(i, t.size()) {
+      temp1 = s[i];
+      s[i] = temp2;
+      temp2 = temp1;
+    }
+
+    if (t == s) {
+      isYes = true;
+      break;
+    }
+
+    j++;
+  }
+
+  cout << (isYes ? "Yes" : "No") << endl;
   return 0;
 }

@@ -12,8 +12,17 @@ using ll = long long;
 #define equal(a, b) (fabs((a) - (b)) < EPS)
 
 int main() {
-  int n;
-  cin >> n;
+  int h, w;
+  cin >> h >> w;
+  vector<vector<char>> c(h, vector<char>(w));
+  rep(i, h) rep(j, w) cin >> c[i][j];
+
+  rep(i, h) {
+    rep(j, w) { cout << c[i][j]; }
+    cout << endl;
+    rep(j, w) { cout << c[i][j]; }
+    cout << endl;
+  }
 
   return 0;
 }

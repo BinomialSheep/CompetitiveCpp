@@ -5,6 +5,8 @@ using ll = long long;
 // g++ --std=c++14 -I "/mnt/c/Program Files (x86)/Microsoft Visual
 // Studio/2019/Community/VC/Tools/MSVC/14.29.30037/include" code.cpp
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define MAX 10000
+#define INTFY (1 << 29)
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
@@ -81,7 +83,7 @@ class Point {
     return min(min(getDistanceSP(a, b, c), getDistanceSP(a, b, d)),
                min(getDistanceSP(c, d, a), getDistanceSP(c, d, b)));
   }
-  // ベクトルabとacの位置判定（Counter-ClockWise)
+  // ベクトルabとacの位置判定
   static int ccw(Point a, Point b, Point c) {
     const int COUNTER_CLOCKWISE = 1;  // a, b, cが半時計回り
     const int CLOCKWISE = -1;         // a, b, cが時計回り
@@ -93,7 +95,7 @@ class Point {
     if (cross(ab, ac) > EPS) return COUNTER_CLOCKWISE;
     if (cross(ab, ac) < -EPS) return CLOCKWISE;
     if (dot(ab, ac) < -EPS) return ONLINE_BACK;
-    if (ab.norm() < ac.norm()) return ONLINE_FRONT;
+    if (a.norm() < b.norm()) return ONLINE_FRONT;
     return ON_SEGMENT;
   }
 
@@ -142,31 +144,27 @@ struct Segment {
   static Point reflect(Segment s, Point p) {
     return p + (project(s, p) - p) * 2;
   }
-  // 線分と点の距離
-  static double getDistanceSP(Segment s, Point p) {
-    return Point::getDistanceSP(s.p1, s.p2, p);
-  }
-  // 線分と線分の距離
-  static double getDistanceSS(Segment s1, Segment s2) {
-    return Point::getDistanceSS(s1.p1, s1.p2, s2.p1, s2.p2);
-  }
 };
 typedef Segment Line;
 
-// 円
-class Circle {
- public:
-  Point c;
-  double r;
-  Circle(Point c = Point(), double r = 0.0) : c(c), r(r) {}
-};
-
-// 多角形
-typedef vector<Point> Polygon;
-
 int main() {
-  int n;
-  cin >> n;
+  int q;
+  cin >> q;
+
+  int x0, y0, x1, y1, x2, y2, x3, y3;
+  vector<double> ans(q);
+  rep(i, q) {
+    cin >> x0 >> y0 >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+    Point p0(x0, y0);
+    Point p1(x1, y1);
+    Point p2(x2, y2);
+    Point p3(x3, y3);
+
+    ans[i] = Point::getDistanceSS(p0, p1, p2, p3);
+  }
+
+  cout.precision(15);
+  rep(i, q) cout << ans[i] << endl;
 
   return 0;
 }

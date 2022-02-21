@@ -12,8 +12,22 @@ using ll = long long;
 #define equal(a, b) (fabs((a) - (b)) < EPS)
 
 int main() {
-  int n;
-  cin >> n;
+  int n, t, a;
+  cin >> n >> t >> a;
+  vector<int> h(n);
+  rep(i, n) cin >> h[i];
+  double best = INFTY;
+  int ans = -1;
+
+  rep(i, n) {
+    double temperature = (t - h[i] * 0.006);
+    if (best > abs(temperature - a)) {
+      best = abs(temperature - a);
+      ans = i + 1;
+    }
+  }
+
+  cout << ans << endl;
 
   return 0;
 }

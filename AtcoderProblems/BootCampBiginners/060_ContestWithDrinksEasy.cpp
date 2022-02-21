@@ -14,6 +14,21 @@ using ll = long long;
 int main() {
   int n;
   cin >> n;
+  vector<int> T(n);
+  rep(i, n) cin >> T[i];
+  int sum = 0;
+  rep(i, n) sum += T[i];
+
+  int m;
+  cin >> m;
+  vector<int> ans(m);
+  int p, x;
+  rep(i, m) {
+    cin >> p >> x;
+    ans[i] = sum - T[p - 1] + x;
+  }
+
+  rep(i, m) cout << ans[i] << endl;
 
   return 0;
 }
