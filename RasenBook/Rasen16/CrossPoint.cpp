@@ -5,6 +5,8 @@ using ll = long long;
 // g++ --std=c++14 -I "/mnt/c/Program Files (x86)/Microsoft Visual
 // Studio/2019/Community/VC/Tools/MSVC/14.29.30037/include" code.cpp
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define MAX 10000
+#define INTFY (1 << 29)
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
@@ -177,36 +179,20 @@ struct Segment {
 };
 typedef Segment Line;
 
-// 円
-class Circle {
- public:
-  Point c;
-  double r;
-  Circle(Point c = Point(), double r = 0.0) : c(c), r(r) {}
-
-  // なす角 argment
-  static double arg(Vector p) { return atan2(p.y, p.x); }
-  // 極座標
-  static Point polar(double a, double r) {
-    return Point(cos(r) * a, sin(r) * a);
-  }
-  // 円と円の交点（2つあると仮定）
-  static pair<Point, Point> getCross(Circle c1, Circle c2) {
-    // 中心間と2交点の三角形の各辺がd, c1.r,
-    // c2.rなことを利用し余弦定理（螺旋16.10）
-    double d = Point::abs(c1.c - c2.c);
-    double a = acos((c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d));
-    double t = arg(c2.c - c1.c);
-    return make_pair(c1.c + polar(c1.r, t + a), c1.c + polar(c1.r, t - a));
-  }
-};
-
-// 多角形
-typedef vector<Point> Polygon;
-
 int main() {
-  int n;
-  cin >> n;
+  int q;
+  cin >> q;
+
+  vector<Point> ans(q);
+  rep(i, q) {
+    int x0, y0, x1, y1, x2, y2, x3, y3;
+    cin >> x0 >> y0 >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+    ans[i] = Segment::getCrossPoint(Segment(Point(x0, y0), Point(x1, y1)),
+                                    Segment(Point(x2, y2), Point(x3, y3)));
+  }
+
+  cout.precision(15);
+  rep(i, q) cout << ans[i].x << " " << ans[i].y << endl;
 
   return 0;
 }

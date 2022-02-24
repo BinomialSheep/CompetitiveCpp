@@ -136,7 +136,8 @@ class Point {
 typedef Point Vector;
 
 //線分と直線
-struct Segment {
+class Segment {
+ public:
   Point p1, p2;
   Segment(Point p1, Point p2) : p1(p1), p2(p2) {}
 
@@ -205,8 +206,23 @@ class Circle {
 typedef vector<Point> Polygon;
 
 int main() {
-  int n;
-  cin >> n;
+  int c1x, c1y, c1r, c2x, c2y, c2r;
+  cin >> c1x >> c1y >> c1r >> c2x >> c2y >> c2r;
+
+  Circle c1 = Circle(Point(c1x, c1y), c1r);
+  Circle c2 = Circle(Point(c2x, c2y), c2r);
+
+  pair<Point, Point> ans = Circle::getCross(c1, c2);
+
+  cout.precision(10);
+  if (ans.first.x < ans.second.x ||
+      (equal(ans.first.x, ans.second.x) && ans.first.y < ans.second.y)) {
+    cout << fixed << ans.first.x << " " << ans.first.y << " " << ans.second.x
+         << " " << ans.second.y << endl;
+  } else {
+    cout << fixed << ans.second.x << " " << ans.second.y << " " << ans.first.x
+         << " " << ans.first.y << endl;
+  }
 
   return 0;
 }
