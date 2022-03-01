@@ -253,9 +253,11 @@ class Polygon {
     if (s.size() < 3) return Polygon(s);
     // x, yを基準に昇順にソート
     sort(s.begin(), s.end());
+
     // 点a, b, cが時計回り（反時計回り）なことを表す定数
     const int CLOCK = -1;
     const int C_CLOCK = 1;
+
     // 凸包の上部を生成
     u.push_back(s[0]);
     u.push_back(s[1]);
@@ -269,6 +271,7 @@ class Polygon {
       }
       u.push_back(s[i]);
     }
+
     // 凸包の下部を生成
     l.push_back(s[s.size() - 1]);
     l.push_back(s[s.size() - 2]);
@@ -280,6 +283,7 @@ class Polygon {
       }
       l.push_back(s[i]);
     }
+
     // x座標最小点から、半時計回りになるように凸包の列を生成
     // 上部は右向きに、下部は左向きに追加したので、下部を逆順に列挙してから上部を逆順で列挙すればよい
     reverse(l.begin(), l.end());
@@ -289,88 +293,32 @@ class Polygon {
   }
 };
 
-/* --平面走査のアルゴリズム-- */
-static const int BOTTOM = 0;
-static const int LEFT = 1;
-static const int RIGHT = 2;
-static const int TOP = 3;
-
-class EndPoint {
- public:
-  Point p;
-  // 入力線分のID, 端点の種類
-  int seg, st;
-  EndPoint() {}
-  EndPoint(Point p, int seg, int st) : p(p), seg(seg), st(st) {}
-
-  bool operator<(const EndPoint &ep) const {
-    // y座標が小さい順に整列
-    if (p.y == ep.p.y) {
-      // yが同一の場合は下端点、左端点、右端点、上端点の順に並ぶ
-      // 同一走査線上で複数処理発生した時にバグらないためのテクニック（螺旋本16.13）
-      return st < ep.st;
-    } else
-      return p.y < ep.p.y;
-  }
-};
-
-// 端点のリスト
-EndPoint EP[2 * 100000];
-
-// 線分交差問題：マンハッタン幾何
-int manhattanIntersection(vector<Segment> S) {
-  int n = S.size();
-  // EPリストに追加
-  for (int i = 0, k = 0; i < n; i++) {
-    // 端点p1が左側（下側）になるよう調整
-    if (S[i].p1.y == S[i].p2.y) {
-      if (S[i].p1.x > S[i].p2.x) swap(S[i].p1, S[i].p2);
-    } else if (S[i].p1.y > S[i].p2.y)
-      swap(S[i].p1, S[i].p2);
-
-    if (S[i].p1.y == S[i].p2.y) {
-      // 水平線の場合、水平成分を端点リストに追加
-      EP[k++] = EndPoint(S[i].p1, i, LEFT);
-      EP[k++] = EndPoint(S[i].p2, i, RIGHT);
-    } else {
-      // 垂直線の場合、垂直成分を端点リストに追加
-      EP[k++] = EndPoint(S[i].p1, i, BOTTOM);
-      EP[k++] = EndPoint(S[i].p2, i, TOP);
-    }
-  }
-  // 端点のy座標について昇順に整列
-  sort(EP, EP + (2 * n));
-
-  // 二分探索木
-  set<int> BT;
-  // 番兵
-  BT.insert(1001001001);
-
-  int count = 0;
-  for (int i = 0; i < 2 * n; i++) {
-    if (EP[i].st == BOTTOM) {
-      // 走査線が下端点に到達したら交差候補に追加
-      BT.insert(EP[i].p.x);
-    } else if (EP[i].st == TOP) {
-      // 走査線が上端点に到達したら交差候補から削除
-      BT.erase(EP[i].p.x);
-    } else if (EP[i].st == LEFT) {
-      // 走査線が左端点に到達したら、今の交差候補との交点を数える
-      // 以下それぞれO(log n), O(log n), O(k)なのでオーダはO(log n + k)
-      auto b = BT.lower_bound(S[EP[i].seg].p1.x);
-      auto e = BT.upper_bound(S[EP[i].seg].p2.x);
-      count += distance(b, e);
-    } else {
-      // 走査線が右端点に到達した時は左端点にも到達してるので何もしない
-    }
-  }
-  return count;
-}
-/* --平面走査のアルゴリズム終わり-- */
-
 int main() {
   int n;
   cin >> n;
+  vector<Point> p(n, Point());
+  rep(i, n) cin >> p[i].x >> p[i].y;
+  //
+  Polygon ans = Polygon::andrewScan(Polygon(p));
+  // 出力
+  int size = ans.pointVec.size();
+  // スタート位置をy座標が1番小さい位置に変える
+  int start = -1;
+  int minY = 1001001000;
+  rep(i, size) {
+    if (minY > ans.pointVec[i].y) {
+      start = i;
+      minY = ans.pointVec[i].y;
+    }
+  }
+
+  cout << size << endl;
+  for (int i = start; i < size; i++) {
+    cout << ans.pointVec[i].x << " " << ans.pointVec[i].y << endl;
+  }
+  for (int i = 0; i < start; i++) {
+    cout << ans.pointVec[i].x << " " << ans.pointVec[i].y << endl;
+  }
 
   return 0;
 }

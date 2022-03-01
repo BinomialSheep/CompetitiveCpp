@@ -138,6 +138,9 @@ typedef Point Vector;
 //線分と直線
 struct Segment {
   Point p1, p2;
+  Segment() {}
+  Segment(double x1, double y1, double x2, double y2)
+      : p1(Point(x1, y1)), p2(Point(x2, y2)) {}
   Segment(Point p1, Point p2) : p1(p1), p2(p2) {}
 
   // 直行判定
@@ -364,13 +367,22 @@ int manhattanIntersection(vector<Segment> S) {
       // 走査線が右端点に到達した時は左端点にも到達してるので何もしない
     }
   }
+
   return count;
 }
-/* --平面走査のアルゴリズム終わり-- */
 
 int main() {
+  // input
   int n;
   cin >> n;
+  vector<Segment> seg(n, Segment());
+  int x1, y1, x2, y2;
+  rep(i, n) {
+    cin >> x1 >> y1 >> x2 >> y2;
+    seg[i] = Segment(Point(x1, y1), Point(x2, y2));
+  }
+  // solve, output
+  cout << manhattanIntersection(seg) << endl;
 
   return 0;
 }
