@@ -41,7 +41,8 @@ class DisjointSet {
       }
     }
   }
-  // 再帰的に親を辿ってrootを見つける。この実装では経路圧縮はしない。
+  // 再帰的に親を辿ってrootを見つける
+  // 親を置き換えることで経路圧縮
   int findSet(int x) {
     if (x != p[x]) {
       p[x] = findSet(p[x]);
