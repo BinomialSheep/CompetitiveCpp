@@ -12,8 +12,27 @@ using ll = long long;
 #define equal(a, b) (fabs((a) - (b)) < EPS)
 
 int main() {
+  // in
   int n;
   cin >> n;
+  vector<ll> A(n);
+  rep(i, n) cin >> A[i];
+  // 中間あたりを求める
+  ll sum = 0;
+  rep(i, n) sum += A[i];
+  ll left = 0;
+  ll right;
+  ll ans = (1LL << 60);
+  rep(i, n) {
+    left += A[i];
+    right = sum - left;
+
+    if (ans > abs(left - right)) {
+      ans = abs(left - right);
+    }
+  }
+
+  cout << ans << endl;
 
   return 0;
 }

@@ -14,6 +14,25 @@ using ll = long long;
 int main() {
   int n;
   cin >> n;
+  vector<int> A(n);
+  vector<int> B(n);
+  rep(i, n) cin >> A[i];
+  rep(i, n) cin >> B[i];
+  int ans1 = 0;
+  int ans2 = 0;
+  rep(i, n) {
+    rep(j, n) {
+      if (A[i] == B[j]) {
+        if (i == j) {
+          ans1++;
+        } else {
+          ans2++;
+        }
+      }
+    }
+  }
+  cout << ans1 << endl;
+  cout << ans2 << endl;
 
   return 0;
 }

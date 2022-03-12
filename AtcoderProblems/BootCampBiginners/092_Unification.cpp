@@ -12,8 +12,27 @@ using ll = long long;
 #define equal(a, b) (fabs((a) - (b)) < EPS)
 
 int main() {
-  int n;
-  cin >> n;
+  string s;
+  cin >> s;
+
+  stack<char> color;
+  int ans = 0;
+
+  rep(i, s.size()) {
+    if (color.empty()) {
+      color.push(s[i]);
+      continue;
+    }
+    char last = color.top();
+    if (s[i] != last) {
+      color.pop();
+      ans += 2;
+    } else {
+      color.push(s[i]);
+    }
+  }
+
+  cout << ans << endl;
 
   return 0;
 }

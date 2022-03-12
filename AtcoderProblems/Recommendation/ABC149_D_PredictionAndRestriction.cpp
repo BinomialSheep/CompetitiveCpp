@@ -12,8 +12,28 @@ using ll = long long;
 #define equal(a, b) (fabs((a) - (b)) < EPS)
 
 int main() {
-  int n;
-  cin >> n;
+  // in
+  int n, k, r, s, p;
+  cin >> n >> k >> r >> s >> p;
+  string t;
+  cin >> t;
+  // solve
+  int score = 0;
+  rep(i, n) {
+    if (i - k >= 0 && t[i] == t[i - k]) {
+      t[i] = 'a';
+      continue;
+    }
+    if (t[i] == 'r') {
+      score += p;
+    } else if (t[i] == 's') {
+      score += r;
+    } else {
+      score += s;
+    }
+  }
+
+  cout << score << endl;
 
   return 0;
 }
