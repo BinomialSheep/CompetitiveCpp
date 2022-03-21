@@ -15,10 +15,27 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
-  int n;
-  cin >> n;
-
+  ll a, b, c, x, y;
+  cin >> a >> b >> c >> x >> y;
   /* solve */
+  // AとBだけ買う
+  if (a + b <= 2 * c) {
+    cout << a * x + b * y << endl;
+    return 0;
+  }
+  // ABとAを買う
+  if (x >= y && a < 2 * c) {
+    cout << a * (x - y) + c * 2 * y << endl;
+    return 0;
+  }
+  // ABとBを買う
+  if (x < y && b < 2 * c) {
+    cout << c * 2 * x + b * (y - x) << endl;
+    return 0;
+  }
+
+  // ABを買って捨てる
+  cout << c * 2 * llMax(x, y) << endl;
 
   /* output */
 

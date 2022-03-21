@@ -10,17 +10,18 @@ using ll = long long;
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
-ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
-ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
-  int n;
-  cin >> n;
-
+  ll n, k;
+  cin >> n >> k;
   /* solve */
+  // 直前の色以外（k-1種類）塗れる
+  ll ans = k;
+  rep(i, n - 1) ans *= (k - 1);
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

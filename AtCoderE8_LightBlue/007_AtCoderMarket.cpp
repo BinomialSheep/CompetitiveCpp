@@ -17,10 +17,32 @@ int main() {
   /* input */
   int n;
   cin >> n;
+  vector<pair<ll, ll>> AB(n);
+  rep(i, n) {
+    ll a, b;
+    cin >> a >> b;
+    AB[i] = make_pair(a, b);
+  }
 
   /* solve */
+  ll ans = 1LL << 60;
+
+  rep(i, n) {
+    ll inI = AB[i].first;
+    rep(j, n) {
+      ll outI = AB[j].second;
+      ll times = 0;
+      rep(k, n) {
+        times += abs(AB[k].first - inI);
+        times += abs(AB[k].second - AB[k].first);
+        times += abs(outI - AB[k].second);
+      }
+      ans = llMin(ans, times);
+    }
+  }
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

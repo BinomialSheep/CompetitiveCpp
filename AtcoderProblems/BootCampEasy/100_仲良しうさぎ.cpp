@@ -17,10 +17,16 @@ int main() {
   /* input */
   int n;
   cin >> n;
-
+  vector<int> A(n);
+  rep(i, n) cin >> A[i];
   /* solve */
-
+  // あえて重複してカウントする
+  int count = 0;
+  rep(i, n) {
+    if (A[A[i] - 1] == i + 1) count++;
+  }
   /* output */
+  cout << count / 2 << endl;
 
   return 0;
 }

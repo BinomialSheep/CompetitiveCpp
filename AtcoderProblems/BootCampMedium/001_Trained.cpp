@@ -17,10 +17,20 @@ int main() {
   /* input */
   int n;
   cin >> n;
+  vector<int> a(n);
+  rep(i, n) cin >> a[i];
 
   /* solve */
-
-  /* output */
+  // ループ検出してもいいが、まぁn回回して到達しないなら絶対到達しない
+  int shining = 0;
+  rep(i, n) {
+    shining = a[shining] - 1;
+    if (shining == 1) {
+      cout << i + 1 << endl;
+      return 0;
+    }
+  }
+  cout << -1 << endl;
 
   return 0;
 }

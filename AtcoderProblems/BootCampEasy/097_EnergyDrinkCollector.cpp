@@ -10,17 +10,34 @@ using ll = long long;
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
-ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
-ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
-  /* input */
-  int n;
-  cin >> n;
-
-  /* solve */
-
-  /* output */
+  // input
+  int n, m;
+  cin >> n >> m;
+  vector<pair<int, int>> AB;
+  rep(i, n) {
+    int A, B;
+    cin >> A >> B;
+    AB.emplace_back(A, B);
+  }
+  // solve
+  // 安い順にソートして貪欲法
+  sort(AB.begin(), AB.end());
+  ll cost = 0;
+  rep(i, n) {
+    ll A = AB[i].first;
+    ll B = AB[i].second;
+    if (m > B) {
+      m -= B;
+      cost += A * B;
+    } else {
+      cost += A * m;
+      break;
+    }
+  }
+  //
+  cout << cost << endl;
 
   return 0;
 }

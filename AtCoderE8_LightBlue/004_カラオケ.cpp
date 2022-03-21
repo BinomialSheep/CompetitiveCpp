@@ -15,12 +15,23 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
-  int n;
-  cin >> n;
+  int n, m;
+  cin >> n >> m;
+  vector<vector<ll>> A(n, vector<ll>(m));
+  rep(i, n) rep(j, m) cin >> A[i][j];
 
   /* solve */
+  ll ans = 0;
+  rep(i, m - 1) {
+    for (int j = i + 1; j < m; j++) {
+      ll score = 0;
+      rep(k, n) { score += llMax(A[k][i], A[k][j]); }
+      ans = llMax(ans, score);
+    }
+  }
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

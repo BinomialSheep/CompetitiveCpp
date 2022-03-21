@@ -14,13 +14,17 @@ ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
-  /* input */
-  int n;
-  cin >> n;
-
-  /* solve */
-
-  /* output */
+  ll a, b, c;
+  cin >> a >> b >> c;
+  // solve
+  // 条件よりどこかの向きに垂直に包丁で1回切る感じになる
+  // a, b, cのどれかが偶数ならその方向に切れば差は0
+  if (a % 2 == 0 || b % 2 == 0 || c % 2 == 0) {
+    cout << 0 << endl;
+    return 0;
+  }
+  // 奇数なら、各方向に差1で切るので、切り口の面積が差になる
+  cout << llMin(a * b, llMin(a * c, b * c)) << endl;
 
   return 0;
 }

@@ -13,14 +13,27 @@ using ll = long long;
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
+int numDivisor(int n) {
+  int ret = 0;
+  for (int i = 1; i <= n; i++) {
+    if (n % i == 0) ret++;
+  }
+  return ret;
+}
+
 int main() {
   /* input */
   int n;
   cin >> n;
 
   /* solve */
+  int ans = 0;
+  for (int i = 1; i <= n; i += 2) {
+    if (numDivisor(i) == 8) ans++;
+  }
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

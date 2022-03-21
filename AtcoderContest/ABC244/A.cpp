@@ -17,10 +17,13 @@ int main() {
   /* input */
   int n;
   cin >> n;
+  string s;
+  cin >> s;
 
   /* solve */
 
   /* output */
+  cout << s[n - 1] << endl;
 
   return 0;
 }

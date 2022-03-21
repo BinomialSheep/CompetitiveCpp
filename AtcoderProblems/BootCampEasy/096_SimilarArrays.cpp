@@ -10,17 +10,23 @@ using ll = long long;
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
-ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
-ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
-  /* input */
+  // in
   int n;
   cin >> n;
+  vector<int> A(n);
+  rep(i, n) cin >> A[i];
+  // solve
+  // 全ての似ている列（3^n通り）から奇数列を引く
+  int numOdd = 1;
+  rep(i, n) {
+    if (A[i] % 2 == 0) numOdd *= 2;
+    // 奇数なら1通りなので何もしない
+  }
 
-  /* solve */
-
-  /* output */
+  //
+  cout << pow(3, n) - numOdd << endl;
 
   return 0;
 }

@@ -17,10 +17,27 @@ int main() {
   /* input */
   int n;
   cin >> n;
+  vector<bool> num(2 * n + 2, false);
 
   /* solve */
-
-  /* output */
+  while (true) {
+    // 高橋くんの手番
+    for (int i = 1; i <= 2 * n + 1; i++) {
+      if (!num[i]) {
+        num[i] = true;
+        cout << i << endl;
+        break;
+      }
+    }
+    // 青木君の手番
+    int m;
+    cin >> m;
+    if (m == 0) {
+      // ゲーム終了
+      return 0;
+    }
+    num[m] = true;
+  }
 
   return 0;
 }

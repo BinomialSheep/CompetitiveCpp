@@ -15,12 +15,30 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
-  int n;
-  cin >> n;
+  char s1, s2, s3, t1, t2, t3;
+  cin >> s1 >> s2 >> s3 >> t1 >> t2 >> t3;
 
   /* solve */
-
-  /* output */
+  // 偶置換ならOK
+  if (s1 == t1) {
+    if (s2 == t2) {
+      cout << "Yes" << endl;
+    } else {
+      cout << "No" << endl;
+    }
+  } else if (s1 == t2) {
+    if (s2 == t1) {
+      cout << "No" << endl;
+    } else {
+      cout << "Yes" << endl;
+    }
+  } else if (s1 == t3) {
+    if (s2 == t2) {
+      cout << "No" << endl;
+    } else {
+      cout << "Yes" << endl;
+    }
+  }
 
   return 0;
 }

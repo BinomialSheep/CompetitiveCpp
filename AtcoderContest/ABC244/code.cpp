@@ -18,6 +18,7 @@ int main() {
   int n;
   cin >> n;
 
+
   /* solve */
 
   /* output */

@@ -13,14 +13,30 @@ using ll = long long;
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
+int solve(int n, int x) {
+  int ret = 0;
+  for (int i = 1; i <= n - 2; i++) {
+    for (int j = i + 1; j <= n - 1; j++) {
+      for (int k = j + 1; k <= n; k++) {
+        if (i + j + k == x) ret++;
+      }
+    }
+  }
+  return ret;
+}
+
+// https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_7_B&lang=ja
 int main() {
   /* input */
-  int n;
-  cin >> n;
+  int n, x;
+  while (true) {
+    cin >> n >> x;
+    if (n == 0 && x == 0) break;
 
-  /* solve */
-
-  /* output */
+    /* solve */
+    /* output */
+    cout << solve(n, x) << endl;
+  }
 
   return 0;
 }
