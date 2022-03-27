@@ -2,15 +2,20 @@
     "configurations": [
         {
             "name": "WSL",
-            "intelliSenseMode": "gcc-x64",
-            "compilerPath": "/usr/bin/gcc",
             "includePath": [
+                "/mnt/c/Users/81902/Documents/source-code/CompetitiveProgramming/ac-library/",
                 "${workspaceFolder}/**",
-                "/mnt/c/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30037/include"
+                "/usr/include/**"
             ],
-            "defines": [],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "/usr/bin/gcc-9",
             "cStandard": "c11",
-            "cppStandard": "c++17"
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
         }
     ],
     "version": 4
