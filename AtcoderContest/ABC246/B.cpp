@@ -13,10 +13,15 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int a, b;
+  cin >> a >> b;
 
   /* solve */
+  int d = a * a + b * b;
 
   /* output */
+  cout.precision(10);
+  cout << fixed << (double)a / sqrt(d) << " " << (double)b / sqrt(d) << endl;
 
   return 0;
 }

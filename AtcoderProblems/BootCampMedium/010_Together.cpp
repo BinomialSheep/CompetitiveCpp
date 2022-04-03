@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
-#include <atcoder/all>
+// #include <atcoder/all>
+// g++ --std=c++14 -I "/mnt/c/Program Files (x86)/Microsoft Visual
+// Studio/2019/Community/VC/Tools/MSVC/14.29.30037/include" code.cpp
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 #define MAX 10000
 #define INFTY (1 << 29)
@@ -13,10 +15,27 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int n;
+  cin >> n;
+  vector<int> a(n);
+  rep(i, n) cin >> a[i];
 
   /* solve */
+  map<int, int> m;
+  rep(i, n) {
+    m[a[i] - 1]++;
+    m[a[i]]++;
+    m[a[i] + 1]++;
+  }
+
+  int ans = 0;
+  for (auto p : m) {
+    //
+    ans = max(ans, p.second);
+  }
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }
