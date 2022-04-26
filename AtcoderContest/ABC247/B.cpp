@@ -13,10 +13,33 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int N;
+  cin >> N;
+  vector<string> s(N);
+  vector<string> t(N);
+  rep(i, N) { cin >> s[i] >> t[i]; }
 
   /* solve */
+  rep(i, N) {
+    int cnt1 = 0;
+    int cnt2 = 0;
+
+    rep(j, N) {
+      if (s[i] == s[j] || s[i] == t[j]) {
+        cnt1++;
+      }
+      if (t[i] == s[j] || t[i] == t[j]) {
+        cnt2++;
+      }
+    }
+    if (cnt1 >= 2 && cnt2 >= 2) {
+      cout << "No" << endl;
+      return 0;
+    }
+  }
 
   /* output */
+  cout << "Yes" << endl;
 
   return 0;
 }

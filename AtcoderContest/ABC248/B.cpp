@@ -13,10 +13,19 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  ll A, B, K;
+  cin >> A >> B >> K;
 
   /* solve */
+  ll i = 0;
+  while (true) {
+    if (A >= B) break;
+    A *= K;
+    i++;
+  }
 
   /* output */
+  cout << i << endl;
 
   return 0;
 }

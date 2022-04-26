@@ -13,10 +13,29 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int N;
+  cin >> N;
+  vector<int> D(N);
+  rep(i, N) cin >> D[i];
+  int M;
+  cin >> M;
+  vector<int> T(M);
+  rep(i, M) cin >> T[i];
 
   /* solve */
+  unordered_multiset<int> mySet;
+  rep(i, N) { mySet.insert(D[i]); }
+  rep(i, M) {
+    auto it = mySet.find(T[i]);
+    if (it == mySet.end()) {
+      cout << "NO" << endl;
+      return 0;
+    }
+    mySet.erase(it);
+  }
 
   /* output */
+  cout << "YES" << endl;
 
   return 0;
 }

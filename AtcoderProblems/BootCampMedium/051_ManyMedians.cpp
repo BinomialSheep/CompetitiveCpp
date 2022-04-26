@@ -13,8 +13,25 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
-
+  int N;
+  cin >> N;
+  vector<int> X(N);
+  rep(i, N) cin >> X[i];
   /* solve */
+  // ソートする用
+  vector<int> Y = X;
+  sort(Y.begin(), Y.end());
+  int s = Y[N / 2 - 1];
+  int b = Y[N / 2];
+
+  rep(i, N) {
+    // 小さい値が消えた時は、大きい方の中央値候補が中央値
+    // 大きい値が消えた時は、小さいの中央値候補が中央値
+    if (X[i] <= s)
+      cout << b << endl;
+    else
+      cout << s << endl;
+  }
 
   /* output */
 

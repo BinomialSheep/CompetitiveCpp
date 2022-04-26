@@ -13,10 +13,17 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int N, K;
+  cin >> N >> K;
+  vector<int> A(N);
+  rep(i, N) cin >> A[i];
 
   /* solve */
+  int ans = (N - 1) / (K - 1);
+  if ((N - 1) % (K - 1) != 0) ans++;
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

@@ -13,10 +13,21 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  string s;
+  cin >> s;
 
   /* solve */
+  string ans = "";
+  rep(i, s.length()) {
+    if (s[i] == 'B') {
+      if (ans != "") ans.pop_back();
+    } else {
+      ans.push_back(s[i]);
+    }
+  }
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

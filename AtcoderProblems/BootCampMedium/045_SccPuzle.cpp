@@ -13,10 +13,23 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  ll N, M;
+  cin >> N >> M;
 
   /* solve */
+  if (N >= M / 2) {
+    cout << M / 2 << endl;
+    return 0;
+  }
+
+  // まずSを使い切る
+  ll ans = N;
+  M -= 2 * N;
+  // 余ったC4個で作る
+  ans += M / 4;
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

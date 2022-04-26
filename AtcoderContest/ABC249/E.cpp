@@ -13,8 +13,11 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int N, P;
+  cin >> N >> P;
 
   /* solve */
+  
 
   /* output */
 

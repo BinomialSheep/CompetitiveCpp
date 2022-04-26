@@ -13,10 +13,21 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int W, H, x, y;
+  cin >> W >> H >> x >> y;
 
   /* solve */
+  // 自明な上界を達成できる
+  double area = (double)W * H / 2;
+  int flag = 0;
+
+  if (W % 2 == 0 && x == W / 2 && H % 2 == 0 && y == H / 2) {
+    flag = 1;
+  }
 
   /* output */
+  cout.precision(20);
+  cout << fixed << area << " " << flag << endl;
 
   return 0;
 }

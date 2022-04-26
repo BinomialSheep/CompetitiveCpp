@@ -13,6 +13,23 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int N;
+  cin >> N;
+  int Y;
+  cin >> Y;
+
+  rep(i, N + 1) {
+    rep(j, N + 1) {
+      int k = N - i - j;
+      if (k < 0) continue;
+      if (10000 * i + 5000 * j + 1000 * k == Y) {
+        cout << i << " " << j << " " << k << endl;
+        return 0;
+      }
+    }
+  }
+
+  cout << "-1 -1 -1" << endl;
 
   /* solve */
 

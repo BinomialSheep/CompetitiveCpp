@@ -13,8 +13,28 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int N;
+  cin >> N;
 
   /* solve */
+  unordered_map<int, vector<int>> myMap;
+  rep(i, N) {
+    int A;
+    cin >> A;
+    myMap[A].push_back(i + 1);
+  }
+
+  int Q;
+  cin >> Q;
+
+  rep(i, Q) {
+    int L, R, X;
+    cin >> L >> R >> X;
+    auto l = lower_bound(myMap[X].begin(), myMap[X].end(), L);
+
+    auto r = lower_bound(myMap[X].begin(), myMap[X].end(), R + 1);
+    cout << distance(l, r) << endl;
+  }
 
   /* output */
 

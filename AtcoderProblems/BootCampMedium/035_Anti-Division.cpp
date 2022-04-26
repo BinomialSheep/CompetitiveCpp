@@ -13,10 +13,16 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  ll A, B, C, D;
+  cin >> A >> B >> C >> D;
 
   /* solve */
+  ll numC = B / C - (A - 1) / C;
+  ll numD = B / D - (A - 1) / D;
+  ll numCD = B / lcm(C, D) - (A - 1) / lcm(C, D);
 
   /* output */
+  cout << B - A + 1 - (numC + numD - numCD) << endl;
 
   return 0;
 }

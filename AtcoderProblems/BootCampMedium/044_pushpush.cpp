@@ -13,10 +13,31 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int n;
+  cin >> n;
+  vector<int> a(n);
+  rep(i, n) cin >> a[i];
 
   /* solve */
+  deque<int> b;
+  rep(i, n) {
+    if (i % 2 == 0) {
+      b.push_back(a[i]);
+    } else {
+      b.push_front(a[i]);
+    }
+  }
+
+  if (n % 2 == 1) {
+    reverse(b.begin(), b.end());
+  }
 
   /* output */
+  rep(i, n) {
+    cout << b.front() << " ";
+    b.pop_front();
+  }
+  cout << endl;
 
   return 0;
 }

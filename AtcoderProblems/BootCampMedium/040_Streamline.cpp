@@ -13,10 +13,27 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  int N, M;
+  cin >> N >> M;
+  vector<int> X(M);
+  rep(i, M) cin >> X[i];
 
-  /* solve */
+  if (N >= M) {
+    cout << 0 << endl;
+    return 0;
+  }
+
+  sort(X.begin(), X.end());
+
+  vector<int> dist(M - 1);
+  rep(i, M - 1) { dist[i] = X[i + 1] - X[i]; }
+  sort(dist.begin(), dist.end());
+
+  ll ans = 0;
+  rep(i, M - N) { ans += dist[i]; }
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

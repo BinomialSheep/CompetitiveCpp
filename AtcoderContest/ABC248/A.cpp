@@ -13,10 +13,20 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  string s;
+  cin >> s;
 
   /* solve */
+  vector<bool> b(10, false);
+  rep(i, s.size()) {
+    //cout << s[i] << endl;
+    b[s[i] - '0'] = true;
+  }
 
   /* output */
+  rep(i, 10) {
+    if (!b[i]) cout << i << endl;
+  }
 
   return 0;
 }

@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 #include <atcoder/all>
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 #define MAX 10000
@@ -17,7 +17,7 @@ int main() {
   cin >> n;
 
   /* solve */
-  ll ans = (1LL << 63) + (1LL << 62);
+  ll ans = (1LL << 62);
   for (int a = 0; a <= 1000000; a++) {
     // 二分探索をする
     int left = -1;

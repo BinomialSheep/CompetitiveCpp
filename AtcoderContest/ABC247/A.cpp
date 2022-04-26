@@ -13,10 +13,15 @@ ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
 int main() {
   /* input */
+  string s;
+  cin >> s;
 
   /* solve */
+  string ans = "0";
+  rep(i, s.size() - 1) { ans.push_back(s[i]); }
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }
