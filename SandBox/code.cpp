@@ -21,17 +21,18 @@ using vvvi = vector<vector<vector<int>>>;
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
-template <typename T>
-inline bool chmax(T &a, T b) {
-  return ((a < b) ? (a = b, true) : (false));
-}
-template <typename T>
-inline bool chmin(T &a, T b) {
-  return ((a > b) ? (a = b, true) : (false));
-}
-
 int main() {
   /* input */
+  set<int> mySet;
+  mySet.insert(2);
+  mySet.insert(1);
+  mySet.insert(4);
+  mySet.insert(5);
+  mySet.insert(4);
+  mySet.insert(3);
+
+  cout << *(mySet.begin()) << endl;
+  cout << *(--mySet.end()) << endl;
 
   /* solve */
 

@@ -21,21 +21,29 @@ using vvvi = vector<vector<vector<int>>>;
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
-template <typename T>
-inline bool chmax(T &a, T b) {
-  return ((a < b) ? (a = b, true) : (false));
-}
-template <typename T>
-inline bool chmin(T &a, T b) {
-  return ((a > b) ? (a = b, true) : (false));
-}
-
 int main() {
   /* input */
+  int N;
+  cin >> N;
+  vs S(N);
+  vi T(N);
+  rep(i, N) cin >> S[i] >> T[i];
 
   /* solve */
-
+  map<string, int> mp;
+  rep(i, N) {
+    if (mp.count(S[i]) == 0) mp[S[i]] = i;
+  }
+  int idx;
+  int score = -1;
+  for (auto p : mp) {
+    if (score < T[p.second]) {
+      score = T[p.second];
+      idx = p.second;
+    }
+  }
   /* output */
+  cout << idx + 1 << endl;
 
   return 0;
 }

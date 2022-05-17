@@ -21,19 +21,36 @@ using vvvi = vector<vector<vector<int>>>;
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
-template <typename T>
-inline bool chmax(T &a, T b) {
-  return ((a < b) ? (a = b, true) : (false));
-}
-template <typename T>
-inline bool chmin(T &a, T b) {
-  return ((a > b) ? (a = b, true) : (false));
-}
-
 int main() {
   /* input */
+  int N, M;
+  cin >> N >> M;
+  string S, T;
+  cin >> S >> T;
 
   /* solve */
+  ll L = lcm((ll)N, (ll)M);
+
+  map<ll, char> smap;
+  map<ll, char> tmap;
+  rep(i, N) {
+    ll idx = i * (L / N);
+    // cout << idx << endl;
+    smap[idx] = S[i];
+  }
+  rep(i, M) {
+    ll idx = i * (L / M);
+    tmap[idx] = T[i];
+  }
+  // 存在しないのは、smap[idx] != tmap[idx]となる時
+  for (auto p : smap) {
+    if (!tmap.count(p.first)) continue;
+    if (tmap[p.first] != p.second) {
+      puts("-1");
+      return 0;
+    }
+  }
+  cout << L << endl;
 
   /* output */
 

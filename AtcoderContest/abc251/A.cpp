@@ -21,21 +21,23 @@ using vvvi = vector<vector<vector<int>>>;
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
-template <typename T>
-inline bool chmax(T &a, T b) {
-  return ((a < b) ? (a = b, true) : (false));
-}
-template <typename T>
-inline bool chmin(T &a, T b) {
-  return ((a > b) ? (a = b, true) : (false));
-}
-
 int main() {
   /* input */
+  string S;
+  cin >> S;
 
   /* solve */
+  string ans = "";
+  if (S.size() == 1) {
+    rep(i, 6) ans += S;
+  } else if (S.size() == 2) {
+    rep(i, 3) ans += S;
+  } else {
+    rep(i, 2) ans += S;
+  }
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

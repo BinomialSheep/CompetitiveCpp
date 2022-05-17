@@ -32,10 +32,36 @@ inline bool chmin(T &a, T b) {
 
 int main() {
   /* input */
+  int N, M;
+  cin >> N >> M;
+  vi D(N);
+  rep(i, N) cin >> D[i];
+  vi C(M);
+  rep(i, M) cin >> C[i];
 
   /* solve */
+  // dp[i][j] i日目を終えて都市jにいる時の疲労度
+  vvi dp(M + 1, vi(N + 1, INFTY));
+  // init
+  dp[0][0] = 0;
+  //
+  rep(i, M) {
+    rep(j, N) {
+      // i日目を終えて都市jにいるとする
+      // ありえない話し！
+      if (dp[i][j] == INFTY) continue;
+      // 移動
+      chmin(dp[i + 1][j + 1], dp[i][j] + D[j] * C[i]);
+      // 移動しない
+      chmin(dp[i + 1][j], dp[i][j]);
+    }
+  }
+
+  int ans = INFTY;
+  rep(i, M + 1) chmin(ans, dp[i][N]);
 
   /* output */
+  cout << ans << endl;
 
   return 0;
 }

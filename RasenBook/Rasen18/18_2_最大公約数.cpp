@@ -11,7 +11,19 @@ using ll = long long;
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
 
-int gcd(int x, int y) {
+// 計算量はO(N+log(a'))になるらしい。ただしa'はAで2番目に大きい数
+template <class T>
+T gcd_vec(vector<T> &A) {
+  int size = (int)A.size();
+  T ret = A[0];
+  for (int i = 1; i < size; i++) {
+    ret = gcd(ret, A[i]);
+  }
+  return ret;
+}
+
+// std::gcdがある
+int myGcd(int x, int y) {
   if (x < y) swap(x, y);
   int r;
   while (y > 0) {
@@ -25,7 +37,7 @@ int gcd(int x, int y) {
 int main() {
   int a, b;
   cin >> a >> b;
-  cout << gcd(a, b) << endl;
+  cout << myGcd(a, b) << endl;
 
   return 0;
 }

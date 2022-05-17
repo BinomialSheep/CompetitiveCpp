@@ -21,19 +21,30 @@ using vvvi = vector<vector<vector<int>>>;
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
-template <typename T>
-inline bool chmax(T &a, T b) {
-  return ((a < b) ? (a = b, true) : (false));
-}
-template <typename T>
-inline bool chmin(T &a, T b) {
-  return ((a > b) ? (a = b, true) : (false));
+// 計算量はO(N+log(a'))になるらしい。ただしa'はAで2番目に大きい数
+template <class T>
+T gcd_vec(vector<T> &A) {
+  int size = (int)A.size();
+  T ret = A[0];
+  for (int i = 1; i < size; i++) {
+    ret = gcd(ret, A[i]);
+  }
+  return ret;
 }
 
 int main() {
   /* input */
+  int N;
+  cin >> N;
+  vi A(N);
+  rep(i, N) cin >> A[i];
 
   /* solve */
+  // 自明な下界を達成できないケース
+  int ans = gcd_vec(A);
+
+  // 互いに素な組を含む場合、自明な下界を達成できますかにはいと答える
+  cout << ans << endl;
 
   /* output */
 

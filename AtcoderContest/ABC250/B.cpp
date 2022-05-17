@@ -14,26 +14,40 @@ using vvvi = vector<vector<vector<int>>>;
 //#include <atcoder/all>
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 #define MAX 10000
-#define INFTY (1 << 30)
+#define INFTY (1 << 29)
 // 浮動小数点の誤差を考慮した等式
 #define EPS (1e-10)
 #define equal(a, b) (fabs((a) - (b)) < EPS)
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
-template <typename T>
-inline bool chmax(T &a, T b) {
-  return ((a < b) ? (a = b, true) : (false));
-}
-template <typename T>
-inline bool chmin(T &a, T b) {
-  return ((a > b) ? (a = b, true) : (false));
-}
-
 int main() {
   /* input */
+  int N, A, B;
+  cin >> N >> A >> B;
 
   /* solve */
+  bool isW = true;
+  rep(i, N) {
+    bool isW2 = isW;
+    rep(j, A) {
+      isW = isW2;
+      // 行
+      rep(k, N) {
+        rep(l, B) {
+          if (isW) {
+            cout << '.';
+          } else {
+            cout << '#';
+          }
+        }
+        isW = !isW;
+      }
+      //
+      cout << endl;
+    }
+    isW = !isW2;
+  }
 
   /* output */
 

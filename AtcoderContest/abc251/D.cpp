@@ -21,21 +21,31 @@ using vvvi = vector<vector<vector<int>>>;
 ll llMax(ll x, ll y) { return (x >= y) ? x : y; }
 ll llMin(ll x, ll y) { return (x <= y) ? x : y; }
 
-template <typename T>
-inline bool chmax(T &a, T b) {
-  return ((a < b) ? (a = b, true) : (false));
-}
-template <typename T>
-inline bool chmin(T &a, T b) {
-  return ((a > b) ? (a = b, true) : (false));
-}
-
 int main() {
   /* input */
+  int W;
+  cin >> W;
 
   /* solve */
+  vi ans;
+  rep(i, 127) {
+    // 下7桁
+    ans.push_back(i + 1);
+  }
+  rep(i, 127) {
+    //　次の7桁
+    ans.push_back(128 * (i + 1));
+  }
+  rep(i, 61) {
+    // そのあとの6桁
+    // 最後2つは使わない（単体で10^6を超えるため）
+    ans.push_back(128 * 128 * (i + 1));
+  }
 
   /* output */
+  cout << ans.size() << endl;
+  rep(i, ans.size()) { cout << ans[i] << " "; }
+  cout << endl;
 
   return 0;
 }
