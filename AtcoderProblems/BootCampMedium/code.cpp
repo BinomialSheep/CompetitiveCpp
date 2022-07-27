@@ -32,12 +32,21 @@ inline bool chmin(T &a, T b) {
   return ((a > b) ? (a = b, true) : (false));
 }
 
+struct Solver {
+  void solve() {
+    /* input */
+
+    /* solve */
+
+    /* output */
+  }
+};
+
 int main() {
-  /* input */
-
-  /* solve */
-
-  /* output */
-
+  int ts = 1;
+  rep(ti, ts) {
+    Solver solver;
+    solver.solve();
+  }
   return 0;
 }
