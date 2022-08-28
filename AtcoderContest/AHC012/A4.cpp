@@ -246,15 +246,15 @@ struct Solver {
       int y = randXor() % RANGE;
       pluMi = randXor() % 2;
       if (pluMi) y = -y;
-      cut1[i] = Point(x, y);
-      x = randXor() % RANGE;
-      pluMi = randXor() % 2;
-      if (pluMi) x = -x;
-      y = randXor() % RANGE;
+      cut1[i] =randXor() % RANGE;
       pluMi = randXor() % 2;
       if (pluMi) y = -y;
       cut2[i] = Point(x, y);
-    }
+    } Point(x, y);
+      x = randXor() % RANGE;
+      pluMi = randXor() % 2;
+      if (pluMi) x = -x;
+      y = 
   }
 
   void print(vector<Point> &cut1, vector<Point> &cut2, int num) {

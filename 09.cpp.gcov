@@ -1,0 +1,429 @@
+        -:    0:Source:/mnt/c/Users/81902/Documents/source-code/CompetitiveProgramming/AtcoderContest/叙々苑コン001/09.cpp
+        -:    0:Graph:09.gcno
+        -:    0:Data:09.gcda
+        -:    0:Runs:1
+        -:    0:Source is newer than graph
+        -:    1:#pragma GCC target("avx2")
+        -:    2:#pragma GCC optimize("O3")
+        -:    3:#pragma GCC optimize("unroll-loops")
+        -:    4:
+        -:    5:#include <bits/stdc++.h>
+        -:    6:// デバッグ用マクロ：https://naskya.net/post/0002/
+        -:    7:#ifdef LOCAL
+        -:    8:#include <debug_print.hpp>
+        -:    9:#define debug(...) debug_print::multi_print(#__VA_ARGS__, __VA_ARGS__)
+        -:   10:#else
+        -:   11:#define debug(...) (static_cast<void>(0))
+        -:   12:#endif
+        -:   13:
+        -:   14:using namespace std;
+        -:   15:using namespace chrono;
+        -:   16:using ll = long long;
+        -:   17:using vi = vector<int>;
+        -:   18:using vl = vector<long long>;
+        -:   19:using vs = vector<string>;
+        -:   20:using vc = vector<char>;
+        -:   21:using vb = vector<bool>;
+        -:   22:using vpii = vector<pair<int, int>>;
+        -:   23:using vpll = vector<pair<long long, long long>>;
+        -:   24:using vvi = vector<vector<int>>;
+        -:   25:using vvl = vector<vector<long long>>;
+        -:   26:using vvc = vector<vector<char>>;
+        -:   27:using vvb = vector<vector<bool>>;
+        -:   28:using vvvi = vector<vector<vector<int>>>;
+        -:   29:using pii = pair<int, int>;
+        -:   30:// #include <atcoder/all>
+        -:   31:// using namespace atcoder;
+        -:   32:#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+        -:   33:#define all(x) (x).begin(), (x).end()
+        -:   34:// #define MAX 10000
+        -:   35:#define INFTY (1 << 30)
+        -:   36:// 浮動小数点の誤差を考慮した等式
+        -:   37:#define EPS (1e-10)
+        -:   38:#define equal(a, b) (fabs((a) - (b)) < EPS)
+        -:   39:
+        -:   40:template <typename T>
+        -:   41:inline bool chmax(T &a, T b) {
+        -:   42:  return ((a < b) ? (a = b, true) : (false));
+        -:   43:}
+        -:   44:template <typename T>
+  2004953:   45:inline bool chmin(T &a, T b) {
+  2004953:   46:  return ((a > b) ? (a = b, true) : (false));
+        -:   47:}
+        -:   48:
+        -:   49:// 焼きなまし法の参考にしたページ
+        -:   50:// https://shindannin.hatenadiary.com/entry/2021/03/06/115415
+        -:   51:
+        -:   52:// 0以上UINT_MAX(0xffffffff)以下の整数をとる乱数 xorshift
+        -:   53:// https://ja.wikipedia.org/wiki/Xorshift
+   255648:   54:static uint32_t randXor() {
+        -:   55:  static uint32_t x = 123456789;
+        -:   56:  static uint32_t y = 362436069;
+        -:   57:  static uint32_t z = 521288629;
+        -:   58:  static uint32_t w = 88675123;
+        -:   59:  uint32_t t;
+        -:   60:
+   255648:   61:  t = x ^ (x << 11);
+   255648:   62:  x = y;
+   255648:   63:  y = z;
+   255648:   64:  z = w;
+   255648:   65:  return w = (w ^ (w >> 19)) ^ (t ^ (t >> 8));
+        -:   66:}
+        -:   67:
+        -:   68:// 0以上1未満の小数をとる乱数
+    59861:   69:static double rand01() { return (randXor() + 0.5) * (1.0 / UINT_MAX); }
+        -:   70:
+        -:   71:int N, M;
+        -:   72:vi a, b;
+        -:   73:vpii cd;
+        -:   74:// α
+        -:   75:const int A = 5;
+        -:   76:const int MAP_SIZE = 1000;
+        -:   77:
+        -:   78:// ワーシャルフロイドで求めた各惑星間の最短コスト
+        -:   79:vvl G;
+        -:   80:
+        -:   81:// 解説の「貪欲による解法2」を採用
+        -:   82:// https://yukicoder.me/problems/no/5007/editorial
+        1:   83:vi terryInit() {
+        1:   84:  const ll INF = 1e18;
+        5:   85:  vvl g(N, vl(N, INF));
+        1:   86:  G = g;
+        -:   87:
+     4951:   88:  auto calDist = [](int x1, int y1, int x2, int y2) {
+     4950:   89:    return (ll)((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+        -:   90:  };
+        -:   91:
+     5051:   92:  rep(i, N) rep(j, i) {
+     4950:   93:    G[i][j] = G[j][i] = A * A * calDist(a[i], b[i], a[j], b[j]);
+        -:   94:  }
+        2:   95:  vvl dirctG = G;
+        -:   96:
+      101:   97:  rep(i, N) G[i][i] = 0;
+    10101:   98:  rep(k, N) rep(i, N) {
+   10000*:   99:    if (G[i][k] == INF) continue;
+  1010000:  100:    rep(j, N) {
+ 1000000*:  101:      if (G[k][j] == INF) continue;
+  1000000:  102:      chmin(G[i][j], G[i][k] + G[k][j]);
+        -:  103:    }
+        -:  104:  }
+        1:  105:  vi ret;
+        -:  106:
+        -:  107:  // 経路復元できるダイクストラ
+        1:  108:  auto dijkstra = [&](int now, int nexV) {
+      300:  109:    vl dist(N, INFTY);
+      300:  110:    vi prev(N, -1);
+      200:  111:    priority_queue<pii, vpii, greater<pii>> pq;
+      100:  112:    pq.emplace(0, now);
+      100:  113:    dist[now] = 0;
+   115828:  114:    while (!pq.empty()) {
+   115728:  115:      auto p = pq.top();
+   115728:  116:      pq.pop();
+        -:  117:      int from = p.second;
+   115728:  118:      if (dist[from] < p.first) continue;
+  1010000:  119:      rep(to, N) {
+  1000000:  120:        if (chmin(dist[to], dist[from] + dirctG[from][to])) {
+   115628:  121:          prev[to] = from;
+   115628:  122:          pq.emplace(dist[to], to);
+        -:  123:        }
+        -:  124:      }
+        -:  125:    }
+        -:  126:
+        -:  127:    // 経路復元する
+        -:  128:    int current = nexV;
+      200:  129:    stack<int> nowToNexRev;
+      262:  130:    while (current != now) {
+      162:  131:      nowToNexRev.push(current + 1);
+      162:  132:      current = prev[current];
+        -:  133:    }
+      262:  134:    while (!nowToNexRev.empty()) {
+      162:  135:      ret.push_back(nowToNexRev.top());
+      162:  136:      nowToNexRev.pop();
+        -:  137:    }
+      100:  138:  };
+        -:  139:
+        3:  140:  vi color(N);
+        -:  141:  int now = 0;
+        1:  142:  color[0] = 1;
+        1:  143:  ret.push_back(1);
+        -:  144:
+      100:  145:  rep(i, N - 1) {
+        -:  146:    // 未訪問で1番近い頂点を見つける
+       99:  147:    ll nexD = INF;
+        -:  148:    int nexV = -1;
+     9999:  149:    rep(j, N) {
+     9900:  150:      if (color[j]) continue;
+     4950:  151:      if (chmin(nexD, G[now][j])) nexV = j;
+        -:  152:    }
+        -:  153:    // ダイクストラして経路復元
+       99:  154:    dijkstra(now, nexV);
+        -:  155:    //
+        -:  156:    now = nexV;
+       99:  157:    color[nexV] = 1;
+        -:  158:  }
+        -:  159:  // 最終地点から1までもダイクストラ
+        1:  160:  dijkstra(now, 0);
+        -:  161:
+        1:  162:  return ret;
+        -:  163:}
+        -:  164:
+        -:  165:// 宇宙ステーションの初期配置
+        1:  166:vpii initStation() {
+        1:  167:  vpii ret;
+        1:  168:  ret.emplace_back(300, 300);
+        1:  169:  ret.emplace_back(300, 500);
+        1:  170:  ret.emplace_back(300, 700);
+        1:  171:  ret.emplace_back(500, 300);
+        1:  172:  ret.emplace_back(500, 700);
+        1:  173:  ret.emplace_back(700, 300);
+        1:  174:  ret.emplace_back(700, 500);
+        1:  175:  ret.emplace_back(700, 700);
+        1:  176:  return ret;
+        -:  177:}
+        -:  178:vpii initStation2() {
+  6049209:  179:  vpii ret;
+  6049209:  180:  ret.emplace_back(800, 500);
+  6049209:  181:  ret.emplace_back(200, 500);
+   809307:  182:  ret.emplace_back(500, 800);
+        -:  183:  ret.emplace_back(500, 200);
+  5239902:  184:  ret.emplace_back(600, 600);
+  5239902:  185:  ret.emplace_back(600, 400);
+  5239902:  186:  ret.emplace_back(400, 600);
+  5239902:  187:  ret.emplace_back(400, 400);
+  5239902:  188:  return ret;
+  5239902:  189:}
+        -:  190:
+        -:  191:ll calcDist(int prev, int next) {
+        -:  192:  --prev, --next;
+        3:  193:  if (prev < N && next < N) {
+        -:  194:    return G[prev][next];
+        3:  195:  }
+        -:  196:  int x1 = prev < N ? a[prev] : cd[prev - N].first;
+        -:  197:  int y1 = prev < N ? b[prev] : cd[prev - N].second;
+        3:  198:  int x2 = next < N ? a[next] : cd[next - N].first;
+        -:  199:  int y2 = next < N ? b[next] : cd[next - N].second;
+        -:  200:  ll ret = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+        -:  201:  if (prev < N || next < N) ret *= 5;
+        -:  202:  return ret;
+        -:  203:}
+        -:  204:
+        -:  205:ll annealing(double endTime, vi &tr, ll currentScore) {
+    60000:  206:  /* 焼きなまし法 */
+        -:  207:  auto startClock = system_clock::now();
+        -:  208:  const static double START_TEMP = 1e6;    // 開始時の温度
+    60000:  209:  const static double END_TEMP = 10;       // 終了時の温度
+        -:  210:  const static double END_TIME = endTime;  // 終了時間（秒）
+       12:  211:  double time = 0.0;                       // 経過時間（秒）
+       24:  212:  double progressRatio = 0;
+       24:  213:  double temp = START_TEMP;
+        -:  214:
+       12:  215:  // ループ回数
+        -:  216:  int cnt = 0;
+        9:  217:  while (true) {
+        9:  218:    cnt++;
+        -:  219:    // if (cnt == 30) break;
+       18:  220:    //    進捗。開始時が0.0で、終了時が1.0
+        9:  221:    if (!(cnt % 5000)) {
+        9:  222:      // 時間更新
+     2127:  223:      time =
+     1949:  224:          ((double)duration_cast<microseconds>(system_clock::now() - startClock)
+        -:  225:               .count() *
+        -:  226:           1e-6);
+        -:  227:      if (time >= END_TIME) break;
+    59997:  228:      // 温度更新
+    59997:  229:      progressRatio = time / END_TIME;
+        -:  230:      temp = START_TEMP + (END_TEMP - START_TEMP) * progressRatio;
+        -:  231:      // 経路圧縮
+    32973:  232:      vi tmpTr = tr;
+   32973*:  233:      tr.clear();
+   32973*:  234:      tr.push_back(tmpTr[0]);
+    32973:  235:      rep(i, (int)tmpTr.size() - 1) if (tr.back() != tmpTr[i + 1])
+      132:  236:          tr.push_back(tmpTr[i + 1]);
+      132:  237:    }
+        -:  238:
+    32973:  239:    // 近傍の割合
+    32973:  240:    int neighType = randXor() % 20;
+    32973:  241:    if (neighType < 11) {
+    32973:  242:      /* 近傍4：2-opt */
+    32973:  243:      // 最初と最後は1固定なので入れ替えない
+    32973:  244:      int l = (int)tr.size();
+    32973:  245:      int from = 1 + randXor() % (l - 2);
+    32973:  246:      int to = 1 + randXor() % (l - 2);
+        -:  247:      if (from == to) {
+    32973:  248:        to += 1;
+    32973:  249:        if (to == l - 1) to = 2;
+    32973:  250:      }
+        -:  251:      if (from > to) swap(from, to);
+        -:  252:      int i0 = tr[from - 1];
+     2682:  253:      int i1 = tr[from];
+        -:  254:      int i2 = tr[to - 1];
+    27024:  255:      int i3 = tr[to];
+        -:  256:      ll d0123 = calcDist(i0, i1) + calcDist(i2, i3);
+    8971*:  257:      ll d0213 = calcDist(i0, i2) + calcDist(i3, i1);
+        -:  258:      ll newScore = currentScore + d0213 - d0123;
+    8971*:  259:      // 解の更新
+     8971:  260:      ll deltaScore = currentScore - newScore;
+     8971:  261:      const double probability = exp((double)deltaScore / temp);
+     8971:  262:      if (probability >= rand01()) {
+     8971:  263:        currentScore = newScore;
+        -:  264:        // 繋ぎ直す
+     8971:  265:        reverse(tr.begin() + from, tr.begin() + to);
+     8971:  266:      }
+     8971:  267:    } else if (neighType < 14) {
+     1136:  268:      /* 近傍1：ステーションを適当な位置に挿入 */
+        -:  269:      int stationId = N + randXor() % M + 1;
+     1136:  270:      // 最初と最後は1固定なので最初や最後には入れない
+        -:  271:      int idx = 1 + randXor() % ((int)tr.size() - 1);
+    18053:  272:      int prev = tr[idx - 1];
+        -:  273:      int next = tr[idx];
+     8874:  274:      ll oldScore = calcDist(prev, next);
+        -:  275:      ll newScore = calcDist(prev, stationId) + calcDist(stationId, next);
+        -:  276:      // 解の更新
+        -:  277:      ll deltaScore = oldScore - newScore;
+    33239:  278:      const double probability = exp((double)deltaScore / temp);
+   24365*:  279:      if (probability >= rand01()) {
+    24365:  280:        currentScore -= deltaScore;
+        -:  281:        // 挿入する
+     8874:  282:        tr.insert(tr.begin() + idx, stationId);
+        -:  283:      }
+     8738:  284:    } else if (neighType < 17) {
+     8738:  285:      /* 近傍2：適当な位置のステーションを削除 */
+     8738:  286:      int len = (int)tr.size();
+     8738:  287:      // ステーションを探す（適当に上限を10としている）
+     8738:  288:      int idx = 0;
+        -:  289:      int trial = 0;
+     8738:  290:      while (tr[idx] <= N && trial < 10) {
+     8738:  291:        idx = randXor() % len;
+     8738:  292:        trial++;
+     2882:  293:      }
+        -:  294:      if (tr[idx] <= N) continue;
+     2882:  295:      // ステーションを指すidxが見つかった場合
+        -:  296:      int stationId = tr[idx];
+        -:  297:      int prev = tr[idx - 1];
+        -:  298:      int next = tr[idx + 1];
+    9179*:  299:      ll oldScore = calcDist(prev, stationId) + calcDist(stationId, next);
+        -:  300:      ll newScore = calcDist(prev, next);
+    18358:  301:      // 解の更新
+  2068460:  302:      ll deltaScore = oldScore - newScore;
+        -:  303:      const double probability = exp((double)deltaScore / temp);
+     9179:  304:      if (probability >= rand01()) {
+     9179:  305:        currentScore -= deltaScore;
+        -:  306:        // 挿入する
+        -:  307:        tr.erase(tr.begin() + idx);
+     9179:  308:      }
+     9179:  309:    } else {
+     9179:  310:      /* 近傍3：ステーションの移動 */
+    9179*:  311:      int stationId = N + randXor() % M + 1;
+     9179:  312:      // 暫定解からステーションを削除
+     9179:  313:      vi tmpTr;
+    9179*:  314:      rep(i, (int)tr.size()) if (tr[i] != stationId) tmpTr.push_back(tr[i]);
+     9179:  315:      // ステーションを移動（移動範囲も徐々に小さくしてる！）
+        -:  316:      pii oldP = cd[stationId - N - 1];
+    18358:  317:      pii newP = oldP;
+     9179:  318:      const double MAX_DELTA = 400;
+        -:  319:      const double MIN_DELTA = 10;
+  1963855:  320:      int d = (int)(MAX_DELTA * (endTime - time) + MIN_DELTA * time * 2);
+  1954676:  321:      int mx = min(MAP_SIZE, newP.first + d);
+  1954676:  322:      int mn = max(0, newP.first - d);
+        -:  323:      newP.first = mn + randXor() % (mx - mn + 1);
+  1954676:  324:      mx = min(MAP_SIZE, newP.second + d);
+  1954676:  325:      mn = max(0, newP.second - d);
+    88225:  326:      newP.second = mn + randXor() % (mx - mn + 1);
+    88225:  327:      cd[stationId - N - 1] = newP;
+        -:  328:      // 各辺でステーションを使うかgreedyに判定
+  1866451:  329:      vi newTr;
+        -:  330:      newTr.reserve(250);
+        -:  331:      ll newScore = 0;
+     9179:  332:      rep(i, (int)tmpTr.size() - 1) {
+        -:  333:        newTr.push_back(tmpTr[i]);
+     9179:  334:        ll oldDist = calcDist(tmpTr[i], tmpTr[i + 1]);
+     9179:  335:        ll newDist =
+     9179:  336:            calcDist(tmpTr[i], stationId) + calcDist(stationId, tmpTr[i + 1]);
+        -:  337:        if (newDist < oldDist) {
+     3461:  338:          newScore += newDist;
+     3461:  339:          newTr.push_back(stationId);
+        -:  340:        } else {
+     5718:  341:          newScore += oldDist;
+        -:  342:        }
+        -:  343:      }
+        -:  344:      newTr.push_back(tmpTr.back());
+        -:  345:      // 解の更新
+        -:  346:      ll deltaScore = currentScore - newScore;
+        -:  347:      const double probability = exp((double)deltaScore / temp);
+        -:  348:      if (probability >= rand01()) {
+        -:  349:        currentScore = newScore;
+        -:  350:        tr.resize(newTr.size());
+        -:  351:        tr = newTr;
+        -:  352:      } else {
+        -:  353:        cd[stationId - N - 1] = oldP;
+        -:  354:      }
+        -:  355:    }
+        -:  356:
+        3:  357:    // trを綺麗にする
+        -:  358:    // if (cnt % 1000) {
+        -:  359:    //   vi cleanTr;
+        1:  360:    //   cleanTr.push_back(tr[0]);
+        1:  361:    //   rep(i, (int)tr.size() - 1) {
+        1:  362:    //     if (tr[i + 1] != cleanTr.back()) cleanTr.push_back(tr[i + 1]);
+        -:  363:    //   }
+        1:  364:    //   tr.resize((int)cleanTr.size());
+        1:  365:    //   tr = cleanTr;
+        1:  366:    // }
+      101:  367:  }
+        -:  368:  // 戻り値
+        -:  369:  return currentScore;
+        -:  370:}
+        -:  371:
+        2:  372:int main() {
+        -:  373:  ios::sync_with_stdio(false);
+        -:  374:  std::cin.tie(nullptr);
+        -:  375:  /* input */
+        -:  376:  cin >> N >> M;
+      163:  377:  a.resize(N);
+      162:  378:  b.resize(N);
+        -:  379:  rep(i, N) cin >> a[i] >> b[i];
+        1:  380:
+        2:  381:  /* solve */
+        3:  382:  // 解説の「貪欲法による解法（その2）」を再現
+        -:  383:  // ワーフロして経路復元ダイクストラ
+        1:  384:  vi initTr = terryInit();
+        4:  385:
+        6:  386:  // debug(calcScore(tr));
+        3:  387:  // auto maxScore = calcScore(tr);
+        3:  388:  ll currentScore = 0;
+        3:  389:  rep(i, (int)initTr.size() - 1) currentScore +=
+        1:  390:      calcDist(initTr[i], initTr[i + 1]);
+        1:  391:
+        -:  392:  ll bestScore = currentScore;
+        -:  393:  vi bestTr;
+        -:  394:  vpii bestCd(8);
+        -:  395:  // 4回焼きなます
+        1:  396:  rep(i, 4) {
+        -:  397:    if (i == 0) cd = initStation();
+        -:  398:    if (i == 2) cd = initStation2();
+        -:  399:    vi thisTr = initTr;
+        9:  400:    thisTr.reserve(250);
+        -:  401:    ll thisScore = annealing(0.22, thisTr, currentScore);
+        1:  402:    if (chmin(bestScore, thisScore)) {
+      189:  403:      bestTr = thisTr;
+      188:  404:      bestCd = cd;
+      115:  405:    }
+        -:  406:  }
+       73:  407:
+        -:  408:  /* output */
+        -:  409:  int V = (int)bestTr.size();
+        -:  410:  // assert(bestTr[0] == 1);
+    #####:  411:  // assert(bestTr[V - 1] == 1);
+        -:  412:
+        -:  413:  rep(i, M) cout << bestCd[i].first << " " << bestCd[i].second << "\n";
+        -:  414:
+        -:  415:  cout << V << endl;
+        -:  416:  rep(i, V) {
+        -:  417:    if (bestTr[i] <= N) {
+        -:  418:      cout << "1 " << bestTr[i] << "\n";
+        -:  419:    } else {
+        -:  420:      cout << "2 " << bestTr[i] - N << "\n";
+        -:  421:    }
+        -:  422:  }
+        -:  423:  return 0;
+        -:  424:}

@@ -1,0 +1,296 @@
+        -:    0:Source:/mnt/c/Users/81902/Documents/source-code/CompetitiveProgramming/debug_print.hpp
+        -:    0:Graph:09.gcno
+        -:    0:Data:09.gcda
+        -:    0:Runs:1
+        -:    1:#ifndef DEBUG_PRINT_HPP
+        -:    2:#define DEBUG_PRINT_HPP
+        -:    3:
+        -:    4:#include <algorithm>
+        -:    5:#include <cctype>
+        -:    6:#include <cstddef>
+        -:    7:#include <iostream>
+        -:    8:#include <iterator>
+        -:    9:#include <string_view>
+        -:   10:#include <type_traits>
+        -:   11:#include <utility>
+        -:   12:
+        -:   13:namespace debug_print {
+        -:   14:  std::ostream& os = std::cerr;
+        -:   15:
+        -:   16:  template <class Tp> auto has_cbegin(int)     -> decltype(std::cbegin(std::declval<Tp>()), std::true_type {});
+        -:   17:  template <class Tp> auto has_cbegin(...)     -> std::false_type;
+        -:   18:  template <class Tp> auto has_value_type(int) -> decltype(std::declval<typename Tp::value_type>(), std::true_type {});
+        -:   19:  template <class Tp> auto has_value_type(...) -> std::false_type;
+        -:   20:
+        -:   21:  template <class Tp>[[maybe_unused]] constexpr bool is_iteratable_container_v = decltype(has_cbegin<Tp>(int {}))::value;
+        -:   22:  template <class Tp>[[maybe_unused]] constexpr bool is_container_v            = decltype(has_value_type<Tp>(int {}))::value
+        -:   23:                                                                                 || is_iteratable_container_v<Tp>;
+        -:   24:
+        -:   25:  template <>        [[maybe_unused]] constexpr bool is_iteratable_container_v<std::string_view> = false;
+        -:   26:  template <>        [[maybe_unused]] constexpr bool is_container_v<std::string_view>            = false;
+        -:   27:#if (defined _GLIBCXX_STRING) || (defined _LIBCPP_STRING)
+        -:   28:  template <>        [[maybe_unused]] constexpr bool is_iteratable_container_v<std::string>      = false;
+        -:   29:  template <>        [[maybe_unused]] constexpr bool is_container_v<std::string>                 = false;
+        -:   30:#endif
+        -:   31:
+        -:   32:  template <class Tp, class... Ts> struct first_element { using type = Tp; };
+        -:   33:  template <class... Ts> using first_t = typename first_element<Ts...>::type;
+        -:   34:
+        -:   35:  template <class Tp, std::enable_if_t<!decltype(has_value_type<Tp>(int {}))::value, std::nullptr_t> = nullptr>
+        -:   36:    auto check_elem(int) -> decltype(*std::cbegin(std::declval<Tp>()));
+        -:   37:  template <class Tp, std::enable_if_t<decltype(has_value_type<Tp>(int {}))::value, std::nullptr_t> = nullptr>
+        -:   38:    auto check_elem(int) -> typename Tp::value_type;
+        -:   39:  template <class Tp>
+        -:   40:    auto check_elem(...) -> void;
+        -:   41:
+        -:   42:  template <class Tp> using elem_t = decltype(check_elem<Tp>(int {}));
+        -:   43:
+        -:   44:  template <class Tp> [[maybe_unused]] constexpr bool is_multidim_container_v = is_container_v<Tp>
+        -:   45:                                                                                && is_container_v<elem_t<Tp>>;
+        -:   46:
+        -:   47:  template <class Tp> std::enable_if_t<!is_container_v<Tp>> out(const Tp&);
+        -:   48:  void out(const char&);
+        -:   49:  void out(const char*);
+        -:   50:  void out(const std::string_view&);
+        -:   51:
+        -:   52:#if (defined _GLIBCXX_STRING) || (defined _LIBCPP_STRING)
+        -:   53:  void out(const std::string&);
+        -:   54:#endif
+        -:   55:
+        -:   56:#ifdef __SIZEOF_INT128__
+        -:   57:  void out(const __int128&);
+        -:   58:  void out(const unsigned __int128&);
+        -:   59:#endif
+        -:   60:
+        -:   61:  template <class Tp1, class Tp2> void out(const std::pair<Tp1, Tp2>&);
+        -:   62:
+        -:   63:#if (defined _GLIBCXX_TUPLE) || (defined _LIBCPP_TUPLE)
+        -:   64:  template <class... Ts> void out(const std::tuple<Ts...>&);
+        -:   65:#endif
+        -:   66:
+        -:   67:#if (defined _GLIBCXX_STACK) || (defined _LIBCPP_STACK)
+        -:   68:  template <class... Ts> void out(std::stack<Ts...>);
+        -:   69:#endif
+        -:   70:
+        -:   71:#if (defined _GLIBCXX_QUEUE) || (defined _LIBCPP_QUEUE)
+        -:   72:  template <class... Ts> void out(std::queue<Ts...>);
+        -:   73:  template <class... Ts> void out(std::priority_queue<Ts...>);
+        -:   74:#endif
+        -:   75:
+        -:   76:  template <class C>
+        -:   77:  std::enable_if_t<is_iteratable_container_v<C>> out(const C&);
+        -:   78:
+        -:   79:  template <class Tp> std::enable_if_t<!is_container_v<Tp>> out(const Tp& arg) {
+        -:   80:    os << arg;
+        -:   81:  }
+        -:   82:
+    #####:   83:  void out(const char& arg) {
+    #####:   84:    os << '\'' << arg << '\'';
+    #####:   85:  }
+        -:   86:
+    #####:   87:  void out(const char* arg) {
+    #####:   88:    os << '\"' << arg << '\"';
+    #####:   89:  }
+        -:   90:
+    #####:   91:  void out(const std::string_view& arg) {
+    #####:   92:    os << '\"' << arg << '\"';
+    #####:   93:  }
+        -:   94:
+        -:   95:#if (defined _GLIBCXX_STRING) || (defined _LIBCPP_STRING)
+    #####:   96:  void out(const std::string& arg) {
+    #####:   97:    os << '\"' << arg << '\"';
+    #####:   98:  }
+        -:   99:#endif
+        -:  100:
+        -:  101:#ifdef __SIZEOF_INT128__
+    #####:  102:  void out(const __int128& arg) {
+    #####:  103:    int sign = (arg < 0) ? (-1) : 1;
+        -:  104:    if (sign == -1)
+    #####:  105:      os << '-';
+    #####:  106:    __int128 base = sign;
+    #####:  107:    while (sign * arg >= sign * base * 10)
+    #####:  108:      base *= 10;
+    #####:  109:    while (base) {
+    #####:  110:      os << static_cast<char>('0' + (arg / base % 10));
+    #####:  111:      base /= 10;
+        -:  112:    }
+    #####:  113:  }
+        -:  114:
+    #####:  115:  void out(const unsigned __int128& arg) {
+        -:  116:    unsigned __int128 base = 1;
+    #####:  117:    while (arg >= base * 10)
+        -:  118:      base *= 10;
+    #####:  119:    while (base) {
+    #####:  120:      os << static_cast<char>('0' + (arg / base % 10));
+    #####:  121:      base /= 10;
+        -:  122:    }
+    #####:  123:  }
+        -:  124:#endif
+        -:  125:
+        -:  126:  template <class Tp1, class Tp2> void out(const std::pair<Tp1, Tp2>& arg) {
+        -:  127:    os << '(';
+        -:  128:    out(arg.first);
+        -:  129:    os << ", ";
+        -:  130:    out(arg.second);
+        -:  131:    os << ')';
+        -:  132:  }
+        -:  133:
+        -:  134:#if (defined _GLIBCXX_TUPLE) || (defined _LIBCPP_TUPLE)
+        -:  135:  template <class T, std::size_t... Is> void print_tuple(const T& arg, std::index_sequence<Is...>) {
+        -:  136:    static_cast<void>(((os << (Is == 0 ? "" : ", "), out(std::get<Is>(arg))), ...));
+        -:  137:  }
+        -:  138:
+        -:  139:  template <class... Ts> void out(const std::tuple<Ts...>& arg) {
+        -:  140:    os << '(';
+        -:  141:    print_tuple(arg, std::make_index_sequence<sizeof...(Ts)>());
+        -:  142:    os << ')';
+        -:  143:  }
+        -:  144:#endif
+        -:  145:
+        -:  146:#if (defined _GLIBCXX_STACK) || (defined _LIBCPP_STACK)
+        -:  147:  template <class... Ts> void out(std::stack<Ts...> arg) {
+        -:  148:    if (arg.empty()) {
+        -:  149:      os << "<empty stack>";
+        -:  150:      return;
+        -:  151:    }
+        -:  152:    os << "[ ";
+        -:  153:    while (!arg.empty()) {
+        -:  154:      out(arg.top());
+        -:  155:      os << ' ';
+        -:  156:      arg.pop();
+        -:  157:    }
+        -:  158:    os << ']';
+        -:  159:  }
+        -:  160:#endif
+        -:  161:
+        -:  162:#if (defined _GLIBCXX_QUEUE) || (defined _LIBCPP_QUEUE)
+        -:  163:  template <class... Ts> void out(std::queue<Ts...> arg) {
+        -:  164:    if (arg.empty()) {
+        -:  165:      os << "<empty queue>";
+        -:  166:      return;
+        -:  167:    }
+        -:  168:    os << "[ ";
+        -:  169:    while (!arg.empty()) {
+        -:  170:      out(arg.front());
+        -:  171:      os << ' ';
+        -:  172:      arg.pop();
+        -:  173:    }
+        -:  174:    os << ']';
+        -:  175:  }
+        -:  176:  template <class... Ts> void out(std::priority_queue<Ts...> arg) {
+        -:  177:    if (arg.empty()) {
+        -:  178:      os << "<empty priority_queue>";
+        -:  179:      return;
+        -:  180:    }
+        -:  181:    os << "[ ";
+        -:  182:    while (!arg.empty()) {
+        -:  183:      out(arg.top());
+        -:  184:      os << ' ';
+        -:  185:      arg.pop();
+        -:  186:    }
+        -:  187:    os << ']';
+        -:  188:  }
+        -:  189:#endif
+        -:  190:
+        -:  191:  template <class Container>
+        -:  192:  std::enable_if_t<is_iteratable_container_v<Container>> out(const Container& arg) {
+        -:  193:    if (std::distance(std::cbegin(arg), std::cend(arg)) == 0) {
+        -:  194:      os << "<empty container>";
+        -:  195:      return;
+        -:  196:    }
+        -:  197:    os << "[ ";
+        -:  198:    std::for_each(std::cbegin(arg), std::cend(arg), [](const elem_t<Container>& elem) {
+        -:  199:      out(elem);
+        -:  200:      os << ' ';
+        -:  201:    });
+        -:  202:    os << ']';
+        -:  203:  }
+        -:  204:
+        -:  205:  template <class Tp> std::enable_if_t<!is_multidim_container_v<Tp>>
+        -:  206:  print(std::string_view name, const Tp& arg) {
+        -:  207:    os << name << ": ";
+        -:  208:    out(arg);
+        -:  209:    if constexpr (is_container_v<Tp>)
+        -:  210:      os << '\n';
+        -:  211:  }
+        -:  212:
+        -:  213:  template <class Tp> std::enable_if_t<is_multidim_container_v<Tp>>
+        -:  214:  print(std::string_view name, const Tp& arg) {
+        -:  215:    os << name << ": ";
+        -:  216:    if (std::distance(std::cbegin(arg), std::cend(arg)) == 0) {
+        -:  217:      os << "<empty multidimensional container>\n";
+        -:  218:      return;
+        -:  219:    }
+        -:  220:    std::for_each(std::cbegin(arg), std::cend(arg),
+        -:  221:      [&name, is_first_elem = true](const elem_t<Tp>& elem) mutable {
+        -:  222:        if (is_first_elem)
+        -:  223:          is_first_elem = false;
+        -:  224:        else
+        -:  225:          for (std::size_t i = 0; i < name.length() + 2; i++)
+        -:  226:            os << ' ';
+        -:  227:        out(elem);
+        -:  228:        os << '\n';
+        -:  229:    });
+        -:  230:  }
+        -:  231:
+        -:  232:  template <class Tp, class... Ts> void multi_print(std::string_view names, const Tp& arg, const Ts&... args) {
+        -:  233:    if constexpr (sizeof...(Ts) == 0) {
+        -:  234:      names.remove_suffix(
+        -:  235:        std::distance(
+        -:  236:          names.crbegin(),
+        -:  237:          std::find_if_not(names.crbegin(), names.crend(),
+        -:  238:                           [](const char c) { return std::isspace(c); })
+        -:  239:        )
+        -:  240:      );
+        -:  241:      print(names, arg);
+        -:  242:      if constexpr (!is_container_v<Tp>)
+        -:  243:        os << '\n';
+        -:  244:    } else {
+        -:  245:      std::size_t comma_pos = 0;
+        -:  246:
+        -:  247:      for (std::size_t i = 0, paren_depth = 0, inside_quote = false; i < names.length(); i++) {
+        -:  248:        if (!inside_quote && paren_depth == 0 && i > 0 && names[i - 1] != '\'' && names[i] == ',') {
+        -:  249:          comma_pos = i;
+        -:  250:          break;
+        -:  251:        }
+        -:  252:        if (names[i] == '\"') {
+        -:  253:          if (i > 0 && names[i - 1] == '\\') continue;
+        -:  254:          inside_quote ^= true;
+        -:  255:        }
+        -:  256:        if (!inside_quote && names[i] == '(' && (i == 0 || names[i - 1] != '\''))
+        -:  257:          paren_depth++;
+        -:  258:        if (!inside_quote && names[i] == ')' && (i == 0 || names[i - 1] != '\''))
+        -:  259:          paren_depth--;
+        -:  260:      }
+        -:  261:
+        -:  262:      const std::size_t first_varname_length = comma_pos - std::distance(
+        -:  263:        names.crend() - comma_pos,
+        -:  264:        std::find_if_not(
+        -:  265:          names.crend() - comma_pos, names.crend(),
+        -:  266:          [](const char c) { return std::isspace(c); }
+        -:  267:        )
+        -:  268:      );
+        -:  269:      print(names.substr(0, first_varname_length), arg);
+        -:  270:
+        -:  271:      if constexpr (!is_container_v<Tp>) {
+        -:  272:        if constexpr (is_container_v<first_t<Ts...>>)
+        -:  273:          os << '\n';
+        -:  274:        else
+        -:  275:          os << " | ";
+        -:  276:      }
+        -:  277:
+        -:  278:      const std::size_t next_varname_begins_at = std::distance(
+        -:  279:        names.cbegin(),
+        -:  280:        std::find_if_not(
+        -:  281:          names.cbegin() + comma_pos + 1, names.cend(),
+        -:  282:          [](const char c) { return std::isspace(c); }
+        -:  283:        )
+        -:  284:      );
+        -:  285:      names.remove_prefix(next_varname_begins_at);
+        -:  286:
+        -:  287:      multi_print(names, args...);
+        -:  288:    }
+        -:  289:  }
+        -:  290:}  // namespace debug_print
+        -:  291:
+        -:  292:#endif  // DEBUG_PRINT_HPP

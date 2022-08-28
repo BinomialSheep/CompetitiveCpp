@@ -47,8 +47,10 @@ struct Solver {
     q.emplace(0, r);
     dist[r] = 0;
     while (!q.empty()) {
-      int pos = q.top().second;
+      auto p = q.top();
+      int pos = p.second;
       q.pop();
+      if (dist[pos] < p.first) continue;
       rep(i, (int)G[pos].size()) {
         int to = G[pos][i].first;
         int cost = G[pos][i].second;
