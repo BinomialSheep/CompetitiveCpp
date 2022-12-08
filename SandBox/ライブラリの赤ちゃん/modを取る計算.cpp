@@ -14,7 +14,8 @@ using vvc = vector<vector<char>>;
 using vvb = vector<vector<bool>>;
 using vvvi = vector<vector<vector<int>>>;
 using pii = pair<int, int>;
-//#include <atcoder/all>
+#include <atcoder/all>
+using namespace atcoder;
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 #define MAX 10000
 #define INFTY (1 << 30)
@@ -53,6 +54,9 @@ ull myPower(ull x, ull n, ull MOD) {
 // ※ あらかじめ累乗を計算しておけば前処理O(N), クエリ毎O(1)になる
 // TODO
 
+// 二項計数
+// https://algo-logic.info/combination/#toc_id_1
+
 // 二項係数（前処理O(n), クエリ毎O(1))
 // facなどのコピペも忘れすに
 const int nCkMAX = 510000;
@@ -82,6 +86,19 @@ class MynCkMod {
     return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
   }
 };
+
+// nは巨大だけどO(k)でいい時
+using mint = modint1000000007;
+mint nCkMod(mint n, mint k) {
+  int ni = n.val();
+  int ki = k.val();
+  mint ret = 1;
+  for (int i = ni; i >= ni - ki + 1; i--) ret *= i;
+  for (int i = 1; i <= ki; i++) ret /= i;
+  return ret;
+}
+
+// NOTE：nもkも小さい時はDPする
 
 struct Solver {
   void solve() {

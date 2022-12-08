@@ -25,7 +25,7 @@ bool isPrimeSimple(long long N) {
   return true;
 }
 
-// 普通の素因数分解
+// 普通の素因数分解 O(√N)
 template <typename T>
 vector<pair<T, T>> calcPrimeFactorSimple(T n) {
   vector<pair<T, T>> ret;
