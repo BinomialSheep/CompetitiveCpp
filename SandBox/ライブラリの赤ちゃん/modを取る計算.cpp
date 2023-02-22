@@ -54,7 +54,7 @@ ull myPower(ull x, ull n, ull MOD) {
 // ※ あらかじめ累乗を計算しておけば前処理O(N), クエリ毎O(1)になる
 // TODO
 
-// 二項計数
+// 二項係数
 // https://algo-logic.info/combination/#toc_id_1
 
 // 二項係数（前処理O(n), クエリ毎O(1))
@@ -98,7 +98,23 @@ mint nCkMod(mint n, mint k) {
   return ret;
 }
 
-// NOTE：nもkも小さい時はDPする
+// nもkも小さい時はDPする
+vvl dp(51, vl(51));
+rep(i, 51) dp[i][0] = 1;
+for (int i = 1; i < 51; i++) {
+  for (int j = 1; j < 51; j++) {
+    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+  }
+}
+// 200C11とかもいける
+// int N = 201, M = 12;
+// vvl dp(N, vl(M));
+// rep(i, N) dp[i][0] = 1;
+// for (int i = 1; i < N; i++) {
+//   for (int j = 1; j < M; j++) {
+//     dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+//   }
+// }
 
 struct Solver {
   void solve() {

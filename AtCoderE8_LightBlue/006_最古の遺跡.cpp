@@ -119,12 +119,12 @@ class Point {
     return a1 + (a2 - a1) * t;
   }
 
-  // 線分の回転（ベクトルabを、座標aを中心に回転させる）
-  static Point rotate(Point a, Point b, double deg) {
+  // 線分の回転（ベクトルabを、座標aを中心に回転させる）ラジアン
+  static Point rotate(Point a, Point b, double rad) {
     double xx = b.x - a.x;
     double yy = b.y - a.y;
-    double px = xx * cos(deg) - yy * sin(deg) + a.x;
-    double py = xx * sin(deg) + yy * cos(deg) + a.y;
+    double px = xx * cos(rad) - yy * sin(rad) + a.x;
+    double py = xx * sin(rad) + yy * cos(rad) + a.y;
     return Point(px, py);
   }
   // 線分の90度左回転（ベクトルabを、座標aを中心に回転させる）

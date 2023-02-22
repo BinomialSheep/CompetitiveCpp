@@ -32,7 +32,8 @@
       "tuple": "cpp",
       "set": "cpp",
       "any": "cpp",
-      "all": "cpp"
+      "all": "cpp",
+      "numeric": "cpp"
     }
   }
 }

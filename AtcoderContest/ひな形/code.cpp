@@ -38,6 +38,15 @@ using pii = pair<int, int>;
 #define VEC(type, name, size) \
   vector<type> name(size);    \
   in(name)
+[[maybe_unused]] void print() {}
+template <class T, class... Ts>
+void print(const T& t, const Ts&... ts);
+template <class... Ts>
+void out(const Ts&... ts) {
+  print(ts...);
+  cout << '\n';
+}
+
 namespace IO {
 #define VOID(a) decltype(void(a))
 struct S {
@@ -122,6 +131,12 @@ template <class... Ts>
 void in(Ts&... t) {
   unpack(IO::i(t));
 }
+template <class T, class... Ts>
+void print(const T& t, const Ts&... ts) {
+  IO::o(t);
+  unpack(IO::o((cout << ' ', ts)));
+}
+#undef unpack
 // #define MAX 10000
 #define INFTY (1 << 30)
 // 浮動小数点の誤差を考慮した等式
@@ -136,10 +151,19 @@ template <typename T>
 inline bool chmin(T& a, T b) {
   return ((a > b) ? (a = b, true) : (false));
 }
+
+#define YESNO(yes, no)                          \
+  void yes(bool i = 1) { out(i ? #yes : #no); } \
+  void no() { out(#no); }
+YESNO(first, second)
+YESNO(First, Second)
+YESNO(Yes, No)
+YESNO(YES, NO)
+YESNO(possible, impossible)
+YESNO(POSSIBLE, IMPOSSIBLE)
 #pragma endregion header
 // #include <atcoder/all>
 // using namespace atcoder;
-
 
 struct Solver {
   void solve() {

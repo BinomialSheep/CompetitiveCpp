@@ -117,6 +117,23 @@ class Point {
     return a1 + (a2 - a1) * t;
   }
 
+  // 線分の回転（ベクトルabを、座標aを中心に回転させる）ラジアン
+  static Point rotate(Point a, Point b, double rad) {
+    double xx = b.x - a.x;
+    double yy = b.y - a.y;
+    double px = xx * cos(rad) - yy * sin(rad) + a.x;
+    double py = xx * sin(rad) + yy * cos(rad) + a.y;
+    return Point(px, py);
+  }
+  // 線分の90度左回転（ベクトルabを、座標aを中心に回転させる）
+  static Point rotate90(Point a, Point b) {
+    double xx = b.x - a.x;
+    double yy = b.y - a.y;
+    double px = -yy + a.x;
+    double py = xx + a.y;
+    return Point(px, py);
+  }
+
   /* --- 演算子のオーバーロード --- */
   // ベクトルの基本演算
   Point operator+(Point p) { return Point(x + p.x, y + p.y); }
@@ -135,7 +152,7 @@ class Point {
 };
 typedef Point Vector;
 
-//線分と直線
+// 線分と直線
 struct Segment {
   Point p1, p2;
   Segment(Point p1, Point p2) : p1(p1), p2(p2) {}
@@ -237,9 +254,9 @@ class Polygon {
         return 1;
       // abのうちy座標が小さいベクトルをaとしても一般性は失われない
       if (a.y > b.y) swap(a, b);
-      //交差する ⇔（abが半直線をまたいで逆側 ∧ aからbに半時計回り）
-      // ⇔ （点pを起点としたベクトルaのy座標が負でbのy座標が正∧abの外積が正)
-      // 内包判定を反転することで交差回数の偶奇を表す
+      // 交差する ⇔（abが半直線をまたいで逆側 ∧ aからbに半時計回り）
+      //  ⇔ （点pを起点としたベクトルaのy座標が負でbのy座標が正∧abの外積が正)
+      //  内包判定を反転することで交差回数の偶奇を表す
       if (a.y < EPS && EPS < b.y && Point::cross(a, b) > EPS)
         isContain = !isContain;
     }
