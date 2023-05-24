@@ -12,10 +12,10 @@
       "args": [
         "-std=gnu++17",
         "-I",
-        "/mnt/c/Users/81902/Documents/source-code/CompetitiveProgramming/",
+        "/home/ilu/competitive/Competitive/",
         "-DLOCAL",
         "-I",
-        "/mnt/c/Users/81902/Documents/source-code/CompetitiveProgramming/ac-library/",
+        "/home/ilu/competitive/Competitive/ac-library/",
         "-Wall",
         "-Wextra",
         "-Wshadow",

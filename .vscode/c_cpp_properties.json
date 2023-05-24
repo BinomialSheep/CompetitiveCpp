@@ -3,7 +3,7 @@
         {
             "name": "WSL",
             "includePath": [
-                "/mnt/c/Users/81902/Documents/source-code/CompetitiveProgramming/ac-library/",
+                "/home/ilu/competitive/Competitive/ac-library/",
                 "${workspaceFolder}/**",
                 "/usr/include/**"
             ],

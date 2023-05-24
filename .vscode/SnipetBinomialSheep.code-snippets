@@ -16,10 +16,10 @@
   // 	"description": "Log output to console"
   // }
   "重みなし無向グラフ": {
-    "prefix": "in_Graph",
+    "prefix": "snip_in_graph",
     "body": [
       "INT(N, M);",
-      "vvl G(N);",
+      "vvi G(N);",
       "// 重みなし無向グラフ",
       "rep(i, M) {",
       "  INT(A, B);",
@@ -29,5 +29,71 @@
       "}"
     ],
     "description": "重みなし無向グラフ"
-  }
+  },
+  "木の入力（無向）": {
+    "prefix": "snip_in_tree",
+    "body": [
+      "INT(N);",
+      "vvi G(N);",
+      "rep(i, N - 1) {",
+      "  INT(a, b);",
+      "  --a, --b;",
+      "  G[a].push_back(b);",
+      "  G[b].push_back(a);",
+      "}"
+    ],
+    "description": "木の入力"
+  },
+  "セグ木テンプレ（RMQ）": {
+    "prefix": "snip_seg_RMQ",
+    "body": [
+      "const int INF = int((1LL << 31) - 1);",
+      "// 要ACL https://atcoder.github.io/ac-library/document_ja/segtree.html",
+      "using S = int;  // 型エイリアス",
+      "// 二項演算S op(S a, S b)",
+      "auto op = [](S a, S b) -> S { return min(a, b); };",
+      "// 単位元 S e()",
+      "auto e = []() -> S { return INF; };",
+      "segtree<S, op, e> seg(N);  // A(N, e)で初期化",
+      "// segtree<S, op, e> seg(A); //"
+    ],
+    "description": "セグ木テンプレ（RMQ）"
+  },
+  "順列全探索": {
+    "prefix": "snip_permutation_enumeration ",
+    "body": [
+      "vi perm(N);",
+      "iota(all(perm), 0);",
+      "do {",
+      "//",
+      "} while (next_permutation(all(perm)));"
+    ],
+    "description": "順列全探索"
+  },
+  "シンプルなテンプレート": {
+    "prefix": "snip_template_simple",
+    "body": [
+      "#include <bits/stdc++.h>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "  ",
+      "",
+      "  return 0;",
+      "}"
+    ],
+    "description": "シンプルなテンプレート"
+  },
+  "Edge": {
+    "prefix": "snip_Edge",
+    "body": [
+      "class Edge {",
+      " public:",
+      "  int source, target, cost;",
+      "  Edge(int s, int t, int c) : source(s), target(t), cost(c) {}",
+      "  bool operator<(Edge &e) { return cost < e.cost; }",
+      "};"
+    ],
+    "description": "Edge"
+  },
 }
