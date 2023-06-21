@@ -132,7 +132,7 @@ struct Eratosthenes {
       for (int i = 0; i < s; ++i) {
         int v = 1;
         for (int j = 0; j < p.second; ++j) {
-          v += p.first;
+          v *= p.first;
           res.push_back(res[i] * v);
         }
       }
