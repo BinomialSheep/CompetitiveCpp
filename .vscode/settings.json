@@ -27,5 +27,9 @@
     "tuple": "cpp",
     "set": "cpp"
   },
-  "C_Cpp.clang_format_style": "Google"
+  "C_Cpp.clang_format_style": "Google",
+  "editor.formatOnSave": true,
+  "[plaintext]": {
+    "editor.formatOnSave": false
+  },
 }

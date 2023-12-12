@@ -120,6 +120,7 @@ struct Solver {
   void solve() {
     /* input */
     // MynCkMod nCkMod(1000000007);
+    // MynCkMod nCkMod(998244353);
     // cout << nCkMod.COM(5, 2) << endl;
     // cout << nCkMod.COM(200, 100) << endl;
     // cout << nCkMod.COM(100000, 50000) << endl;
