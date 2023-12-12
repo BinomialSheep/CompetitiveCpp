@@ -7,10 +7,10 @@
             "command": "/usr/bin/g++-9",
             "args": [
                 "-std=gnu++17",
-                "-I/home/ilu/competitive/Competitive",
+                "-I/home/ilu/Competitive/Competitive",
                 "-DLOCAL",
                 "-I",
-                "/home/ilu/competitive/Competitive/ac-library/",
+                "/home/ilu/Competitive/Competitive/ac-library/",
                 "-Wall",
                 "-Wextra",
                 "-Wshadow",
