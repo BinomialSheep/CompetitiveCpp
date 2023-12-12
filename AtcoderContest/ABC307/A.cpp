@@ -170,13 +170,12 @@ struct Solver {
     /* input */
     INT(N);
     VEC(int, A, 7 * N);
-
     /* solve */
     vi B(N);
     rep(i, N) rep(j, 7) { B[i] += A[i * 7 + j]; }
-    out(B);
 
     /* output */
+    out(B);
   }
 };
 
